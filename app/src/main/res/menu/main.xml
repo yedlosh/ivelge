@@ -10,5 +10,5 @@
         android:title="@string/action_new_test"
         android:orderInCategory="100"
         android:icon="@drawable/ic_action_new"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
 </menu>
