@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:orientation="vertical">
+        <TextView
+            android:id="@+id/participant_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Participant1" />
+
+        <TextView
+            android:id="@+id/finished_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Finished 12:38 15.4.2014"
+             />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/duration_text"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Duration: 0:25" />
+            <TextView
+                android:id="@+id/logs_text"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Logs: 5" />
+        </LinearLayout>
+
+</LinearLayout>
