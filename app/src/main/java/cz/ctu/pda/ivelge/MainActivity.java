@@ -1,6 +1,7 @@
 package cz.ctu.pda.ivelge;
 
 import android.app.ListActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -56,8 +57,13 @@ public class MainActivity extends ListActivity {
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
-        Map articleItemMap = (Map) getListAdapter().getItem(position);
-        Toast.makeText(this, articleItemMap.get("testName") + " selected", Toast.LENGTH_LONG).show();
+        //Map articleItemMap = (Map) getListAdapter().getItem(position);
+        //Toast.makeText(this,Integer.toString(position)+" "+Long.toString(id)+" selected",Toast.LENGTH_LONG).show();
+        Intent intent=new Intent(this,TestDetail.class);
+        Bundle b=new Bundle();
+        b.putLong("id",id);
+        intent.putExtras(b);
+        startActivity(intent);
     }
 
     private List<Map<String, String>> getdata(){
