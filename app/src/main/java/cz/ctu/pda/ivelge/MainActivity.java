@@ -2,6 +2,7 @@ package cz.ctu.pda.ivelge;
 
 import android.app.ListActivity;
 import android.content.Intent;
+import android.location.SettingInjectorService;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,7 +22,7 @@ public class MainActivity extends ListActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main);
         List<Map<String, String>> list=getdata();
         String[] from = {"date", "testName", "participantsNumber","upload"};
         int[] to={R.id.date,R.id.test_name,R.id.participant_number,R.id.upload};
@@ -44,8 +45,8 @@ public class MainActivity extends ListActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_settings) {
-
-
+            Intent intent=new Intent(this, SettingsActivity.class);
+            startActivity(intent);
             return true;
         }else if(id==R.id.action_new_test){
 
@@ -57,11 +58,13 @@ public class MainActivity extends ListActivity {
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
-        //Map articleItemMap = (Map) getListAdapter().getItem(position);
+        Map articleItemMap = (Map) getListAdapter().getItem(position);
+        String name=(String)articleItemMap.get("testName");
         //Toast.makeText(this,Integer.toString(position)+" "+Long.toString(id)+" selected",Toast.LENGTH_LONG).show();
         Intent intent=new Intent(this,TestDetail.class);
         Bundle b=new Bundle();
         b.putLong("id",id);
+        b.putString("name",name);
         intent.putExtras(b);
         startActivity(intent);
     }
