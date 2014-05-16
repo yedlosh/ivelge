@@ -32,6 +32,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="MainActivity" />
         </activity>
+        <activity
+            android:name="cz.ctu.pda.ivelge.ParticipantDetailActivity"
+            android:label="@string/title_activity_participant_detail"
+            android:parentActivityName="cz.ctu.pda.ivelge.TestDetail" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="TestDetail" />
+        </activity>
     </application>
 
 </manifest>

@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
 import java.util.ArrayList;
@@ -47,6 +49,16 @@ public class TestDetail extends ListActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+    @Override
+    protected void onListItemClick(ListView l, View v, int position, long id) {
+        Map articleItemMap = (Map) getListAdapter().getItem(position);
+        String name=(String)articleItemMap.get("participant");
+        Intent intent=new Intent(this,ParticipantDetailActivity.class);
+        Bundle b=new Bundle();
+        b.putString("name",name);
+        intent.putExtras(b);
+        startActivity(intent);
     }
 
     private List<Map<String, String>> getdata(){
