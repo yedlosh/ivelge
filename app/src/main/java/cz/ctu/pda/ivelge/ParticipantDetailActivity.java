@@ -4,19 +4,56 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 public class ParticipantDetailActivity extends ActionBarActivity {
-    private String pretest;
-    private String posttest;
+    private SessionDataSource dataSource;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_participant_detail);
         Bundle b=getIntent().getExtras();
         this.setTitle(b.getString("name"));
-        pretest=b.get("pretest");
-        posttest=b.get
+        dataSource.open();
+        long testId=b.getLong("testId");
+        int position=b.getInt("position");
+        List<Session> sessions=dataSource.getTestSessions(testId);
+        Session session=getdata(sessions,position);
+        EditText pretest=(EditText)findViewById(R.id.pretest);
+        pretest.setText(session.getPreTest());
+        TextView posttest_label=(TextView)findViewById(R.id.posttest_label);
+        EditText posttest=(EditText)findViewById(R.id.posttest);
+        Button viewLogBtn=(Button)findViewById(R.id.view_log_btn);
+        Button startSessionBtn=(Button)findViewById(R.id.start_session_btn);
+        if(session.getStartTime()==-1){//not started
+            posttest_label.setVisibility(2);//gone
+            posttest.setVisibility(2);//gone
+            viewLogBtn.setVisibility(2);//gone
+            startSessionBtn.setVisibility(0);//visible
+        }else{
+            posttest_label.setVisibility(0);//visible
+            posttest.setVisibility(0);//visible
+            posttest.setText(session.getPostTest());
+            viewLogBtn.setVisibility(0);//visible
+            startSessionBtn.setVisibility(2);//gone
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        dataSource.close();
+        super.onDestroy();
     }
 
 
@@ -37,5 +74,17 @@ public class ParticipantDetailActivity extends ActionBarActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+    private Session getdata(List<Session> sessions,int position){
+        return sessions.get(position);
+    }
+
+
+    public void viewLog(View view) {
+        //TODO
+    }
+
+    public void sendMessage(View view) {
+        //TODO
     }
 }
