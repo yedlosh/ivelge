@@ -48,6 +48,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ParticipantDetailActivity" />
         </activity>
+                <activity android:name="cz.ctu.pda.ivelge.SessionActivity"
+            android:label="Session"
+            >
+        </activity>
     </application>
 
 </manifest>
