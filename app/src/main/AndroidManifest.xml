@@ -40,10 +40,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="TestDetail" />
         </activity>
-        <activity
-            android:name="cz.ctu.pda.ivelge.SessionActivity"
-            android:label="@string/title_activity_session" >
+        <activity android:name="cz.ctu.pda.ivelge.SessionActivity"
+            android:label="@string/title_activity_session"
+            >
         </activity>
     </application>
 
 </manifest>
+

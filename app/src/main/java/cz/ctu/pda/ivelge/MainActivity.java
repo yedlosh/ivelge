@@ -61,7 +61,8 @@ public class MainActivity extends ListActivity {
         Map articleItemMap = (Map) getListAdapter().getItem(position);
         String name=(String)articleItemMap.get("testName");
         //Toast.makeText(this,Integer.toString(position)+" "+Long.toString(id)+" selected",Toast.LENGTH_LONG).show();
-        Intent intent=new Intent(this,TestDetail.class);
+       // Intent intent=new Intent(this,TestDetail.class);
+        Intent intent=new Intent(this,SessionActivity.class);
         Bundle b=new Bundle();
         b.putLong("id",id);
         b.putString("name",name);

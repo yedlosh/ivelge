@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
-
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -17,7 +16,6 @@ import android.view.ViewGroup;
  * to handle interaction events.
  * Use the {@link LogFragment#newInstance} factory method to
  * create an instance of this fragment.
- *
  */
 public class LogFragment extends Fragment {
 
@@ -25,6 +23,15 @@ public class LogFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+
+        View rootView = inflater.inflate(R.layout.fragment_log, container, false);
+
+        return rootView;
     }
 
 }
