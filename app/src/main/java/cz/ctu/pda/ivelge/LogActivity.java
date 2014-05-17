@@ -64,7 +64,7 @@ public class LogActivity extends FragmentActivity {
                 case 1:
                     break;
             }
-            return null;//new ScreenSlidePageFragment();
+            return new ScreenSlidePageFragment();
         }
 
         @Override
