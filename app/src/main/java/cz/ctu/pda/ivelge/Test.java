@@ -12,13 +12,17 @@ public class Test implements Comparable<Test> {
     private List<String> participants;
     private List<String> tasks;
     private List<Category> categories;
+    private long timestamp;
+    private boolean uploaded;
 
-    public Test(long id, String name, List<String> participants, List<String> tasks, List<Category> categories) {
+    public Test(long id, String name, List<String> participants, List<String> tasks, List<Category> categories,long timestamp,boolean uploaded) {
         this.id = id;
         this.name = name;
         this.participants = participants;
         this.tasks = tasks;
         this.categories = categories;
+        this.timestamp=timestamp;
+        this.uploaded=uploaded;
     }
 
     public long getId() {
@@ -59,6 +63,22 @@ public class Test implements Comparable<Test> {
 
     public void setCategories(List<Category> categories) {
         this.categories = categories;
+    }
+
+    public long getTimestamp(){
+        return timestamp;
+    }
+
+    public void setTimestamp(long timestamp){
+        this.timestamp=timestamp;
+    }
+
+    public boolean isUploaded(){
+        return uploaded;
+    }
+
+    public void setUploaded(boolean uploaded){
+        this.uploaded=uploaded;
     }
 
     @Override

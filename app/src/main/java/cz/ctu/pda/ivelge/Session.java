@@ -14,23 +14,29 @@ public class Session {
     private String preTest;
     private String postTest;
     private List<Log> logs;
+    private String participantName;
 
-    public Session(long id, long startTime, long endTime) {
+    public Session(long id, long startTime, long endTime,String participantName) {
         this.id = id;
         this.startTime = startTime;
         this.endTime = endTime;
+        this.participantName=participantName;
         logs = new ArrayList<Log>();
     }
 
-    public Session(long id, long startTime, long endTime, String preTest, String postTest, List<Log> logs) {
+    public Session(long id, long startTime, long endTime, String preTest, String postTest, List<Log> logs,String participantName) {
         this.id = id;
         this.startTime = startTime;
         this.endTime = endTime;
         this.preTest = preTest;
         this.postTest = postTest;
+        this.participantName=participantName;
         this.logs = logs;
     }
 
+    public int getNumberOfLogs(){
+        return logs.size();
+    }
 
     public long getId() {
         return id;
@@ -70,6 +76,14 @@ public class Session {
 
     public void setPostTest(String postTest) {
         this.postTest = postTest;
+    }
+
+    public String getParticipantName(){
+        return participantName;
+    }
+
+    public void setParticipantName(String name){
+        participantName=name;
     }
 
 
