@@ -5,6 +5,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.util.List;
+
 /**
  * Created by yedlosh on 07/12/13.
  */
@@ -15,6 +17,7 @@ public class DatabaseSQLiteHelper extends SQLiteOpenHelper {
     public static final String TEST_NAME = "name";
     public static final String TEST_PARTICIPANTS = "participants";
     public static final String TEST_TASKS = "tasks";
+    public static final String TEST_CATEGORIES = "categories";
 
     public static final String TABLE_SESSION = "Session";
     public static final String SESSION_ID = "_id";
@@ -36,7 +39,7 @@ public class DatabaseSQLiteHelper extends SQLiteOpenHelper {
     public static final String TABLE_CATEGORY = "Category";
     public static final String CATEGORY_ID = "_id";
     public static final String CATEGORY_NAME = "name";
-    public static final String CATEGORY_PARENTCATEGORY = "parentCategory";
+    public static final String CATEGORY_SUBCATEGORIES = "subcategories";
 
 
     private static final String DATABASE_NAME = "ivelge.db";
@@ -45,14 +48,15 @@ public class DatabaseSQLiteHelper extends SQLiteOpenHelper {
     // Table creation sql statements
     private static final String TEST_CREATE = "create table "
             + TABLE_TEST + "("
-            + TEST_ID + " integer primary key, "
+            + TEST_ID + " integer primary key autoincrement, "
             + TEST_NAME + " text not null, "
             + TEST_PARTICIPANTS + " text not null, "
-            + TEST_TASKS + " integer not null" + ");";
+            + TEST_TASKS + " integer not null"
+            + TEST_CATEGORIES + "text" + ");";
 
     private static final String SESSION_CREATE = "create table "
             + TABLE_SESSION + "("
-            + SESSION_ID + " integer primary key, "
+            + SESSION_ID + " integer primary key autoincrement, "
             + SESSION_STARTTIME + " integer not null, "
             + SESSION_ENDTIME + " integer not null, "
             + SESSION_PRETEST + " text, "
@@ -62,7 +66,7 @@ public class DatabaseSQLiteHelper extends SQLiteOpenHelper {
 
     private static final String LOG_CREATE = "create table "
             + TABLE_LOG + "("
-            + LOG_ID + " integer primary key, "
+            + LOG_ID + " integer primary key autoincrement, "
             + LOG_TIMESTAMP + " integer not null, "
             + LOG_PRIORITY + " integer, "
             + LOG_LOCATION + " text, " //TODO get correct regarding the gMaps API
@@ -73,9 +77,9 @@ public class DatabaseSQLiteHelper extends SQLiteOpenHelper {
 
     private static final String CATEGORY_CREATE = "create table "
             + TABLE_CATEGORY + "("
-            + CATEGORY_ID + " integer primary key, "
+            + CATEGORY_ID + " integer primary key autoincrement, "
             + CATEGORY_NAME + " text not null, "
-            + CATEGORY_PARENTCATEGORY + " integer" + ");";
+            + CATEGORY_SUBCATEGORIES + " text" + ");";
 
     public DatabaseSQLiteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -126,4 +130,19 @@ public class DatabaseSQLiteHelper extends SQLiteOpenHelper {
         return sb.toString();
     }*/
 
+    public static String listToCsv(List list, char separator) {
+        StringBuilder sb = new StringBuilder();
+        // all but last
+        for(int i = 0; i < list.size() - 1 ; i++) {
+            sb.append(list.get(i).toString());
+            sb.append(separator);
+        }
+
+        // last string, no separator
+        if(list.size() > 0){
+            sb.append(list.get(list.size()-1));
+        }
+
+        return sb.toString();
+    }
 }

@@ -10,15 +10,15 @@ public class Category {
 
     private long id;
     private String name;
-    private List<Category> subcategories;
+    private List<String> subcategories;
 
     public Category(long id, String name) {
         this.id = id;
         this.name = name;
-        subcategories = new ArrayList<Category>();
+        subcategories = new ArrayList<String>();
     }
 
-    public Category(long id, String name, List<Category> subcategories) {
+    public Category(long id, String name, List<String> subcategories) {
         this.id = id;
         this.name = name;
         this.subcategories = subcategories;
@@ -40,11 +40,15 @@ public class Category {
         this.name = name;
     }
 
-    public List<Category> getSubcategories() {
+    public List<String> getSubcategories() {
         return subcategories;
     }
 
-    public void setSubcategories(List<Category> subcategories) {
+    public void setSubcategories(List<String> subcategories) {
         this.subcategories = subcategories;
+    }
+
+    public void addSubcategory(String subcategory){
+        subcategories.add(subcategory);
     }
 }

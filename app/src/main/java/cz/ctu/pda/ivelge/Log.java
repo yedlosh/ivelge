@@ -13,19 +13,21 @@ public class Log {
     private String location; //TODO change regarding the gMaps API
     private String description;
     private File photo;
+    private long sessionId;
 
     public Log(long id, long timestamp) {
         this.id = id;
         this.timestamp = timestamp;
     }
 
-    public Log(long id, long timestamp, int priority, String location, String description, File photo) {
+    public Log(long id, long timestamp, int priority, String location, String description, File photo, long sessionId) {
         this.id = id;
         this.timestamp = timestamp;
         this.priority = priority;
         this.location = location;
         this.description = description;
         this.photo = photo;
+        this.sessionId = sessionId;
     }
 
     public long getId() {
@@ -74,5 +76,13 @@ public class Log {
 
     public void setPhoto(File photo) {
         this.photo = photo;
+    }
+
+    public long getSessionId() {
+        return sessionId;
+    }
+
+    public void setSessionId(long sessionId) {
+        this.sessionId = sessionId;
     }
 }

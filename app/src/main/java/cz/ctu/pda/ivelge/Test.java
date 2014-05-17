@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Created by yedlosh on 16/05/2014.
  */
-public class Test {
+public class Test implements Comparable<Test> {
 
     private long id;
     private String name;
@@ -13,11 +13,12 @@ public class Test {
     private List<String> tasks;
     private List<Category> categories;
 
-    public Test(long id, String name, List<String> participants, List<String> tasks) {
+    public Test(long id, String name, List<String> participants, List<String> tasks, List<Category> categories) {
         this.id = id;
         this.name = name;
         this.participants = participants;
         this.tasks = tasks;
+        this.categories = categories;
     }
 
     public long getId() {
@@ -52,5 +53,16 @@ public class Test {
         this.tasks = tasks;
     }
 
+    public List<Category> getCategories() {
+        return categories;
+    }
 
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
+    }
+
+    @Override
+    public int compareTo(Test t) {
+        return (this.id < t.id ) ? -1 : (this.id > t.id) ? 1 : 0 ;
+    }
 }
