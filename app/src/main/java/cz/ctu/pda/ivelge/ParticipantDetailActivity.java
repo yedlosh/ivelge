@@ -7,13 +7,16 @@ import android.view.MenuItem;
 
 
 public class ParticipantDetailActivity extends ActionBarActivity {
-
+    private String pretest;
+    private String posttest;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_participant_detail);
         Bundle b=getIntent().getExtras();
         this.setTitle(b.getString("name"));
+        pretest=b.get("pretest");
+        posttest=b.get
     }
 
 

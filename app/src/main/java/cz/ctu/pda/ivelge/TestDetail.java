@@ -9,13 +9,16 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 
 public class TestDetail extends ListActivity {
+    private SessionDataSource dataSource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,8 +26,10 @@ public class TestDetail extends ListActivity {
         setContentView(R.layout.activity_test_detail);
         Bundle b = getIntent().getExtras();
         this.setTitle(b.getString("name"));
-
-        List<Map<String, String>> list=getdata();
+        dataSource.open();
+        String id=b.getString("id");
+        List<Session> sessions=dataSource.getTestSessions(Long.parseLong(id));
+        List<Map<String, String>> list=getdata(sessions);
         String[] from = {"participant", "finished","duration","logs"};
         int[] to={R.id.participant_name,R.id.finished_text,R.id.duration_text,R.id.logs_text};
         SimpleAdapter adapter = new SimpleAdapter(this,list,R.layout.test_detail_list_item,from,to);
@@ -54,21 +59,35 @@ public class TestDetail extends ListActivity {
     protected void onListItemClick(ListView l, View v, int position, long id) {
         Map articleItemMap = (Map) getListAdapter().getItem(position);
         String name=(String)articleItemMap.get("participant");
+        String pretest=(String)articleItemMap.get("pretest");
+        String posttest=(String)articleItemMap.get("posttest");
         Intent intent=new Intent(this,ParticipantDetailActivity.class);
         Bundle b=new Bundle();
         b.putString("name",name);
+        b.putString("preteste",pretest);
+        b.putString("posttest",posttest);
         intent.putExtras(b);
         startActivity(intent);
     }
 
-    private List<Map<String, String>> getdata(){
+    private List<Map<String, String>> getdata(List<Session> sessions){
         List<Map<String, String>> list=new ArrayList<Map<String, String>>();
-        Map<String,String> map1 =new HashMap<String,String>();
-        map1.put("participant","Participant1");
-        map1.put("finished","15:43 15.3.2014");
-        map1.put("logs","7");
-        map1.put("duration","0:25");
-        list.add(map1);
+        Map<String,String> map;
+        Session session;
+        for(int i=0;i<sessions.size();i++){
+            session=sessions.get(i);
+            map=new HashMap<String,String>();
+            map.put("participant",session.getParticipantName());
+            SimpleDateFormat dateFormat = new SimpleDateFormat("H:mm d.M.yyyy");
+            map.put("finished",dateFormat.format(new Date(session.getEndTime() * 1000)));
+            map.put("logs",Integer.toString(session.getNumberOfLogs()));
+            dateFormat = new SimpleDateFormat("H:mm");
+            long duration=session.getEndTime()-session.getStartTime();
+            map.put("duration",dateFormat.format(new Date(duration * 1000)));
+            map.put("pretest",session.getPreTest());
+            map.put("posttest",session.getPostTest());
+            list.add(map);
+        }
         return list;
     }
 }

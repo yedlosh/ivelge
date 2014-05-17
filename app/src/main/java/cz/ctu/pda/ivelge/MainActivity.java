@@ -11,20 +11,26 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 
 public class MainActivity extends ListActivity {
+    private TestDataSource dataSource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        List<Map<String, String>> list=getdata();
-        String[] from = {"date", "testName", "participantsNumber","upload"};
+        dataSource=new TestDataSource(this);
+        dataSource.open();
+        List<Test> tests=dataSource.getAllTests();
+        List<Map<String, String>> list=getdata(tests);
+        String[] from = {"timestamp", "testName", "participantsNumber","uploaded"};
         int[] to={R.id.date,R.id.test_name,R.id.participant_number,R.id.upload};
         SimpleAdapter adapter = new SimpleAdapter(this,list,R.layout.test_list_item,from,to);
         setListAdapter(adapter);
@@ -58,31 +64,35 @@ public class MainActivity extends ListActivity {
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
-        Map articleItemMap = (Map) getListAdapter().getItem(position);
-        String name=(String)articleItemMap.get("testName");
-        //Toast.makeText(this,Integer.toString(position)+" "+Long.toString(id)+" selected",Toast.LENGTH_LONG).show();
+        Map itemMap = (Map) getListAdapter().getItem(position);
+        String name=(String)itemMap.get("testName");
         Intent intent=new Intent(this,TestDetail.class);
         Bundle b=new Bundle();
-        b.putLong("id",id);
+        b.putString("id",(String)itemMap.get("id"));
         b.putString("name",name);
         intent.putExtras(b);
         startActivity(intent);
     }
 
-    private List<Map<String, String>> getdata(){
+    private List<Map<String, String>> getdata(List<Test> tests){
         List<Map<String, String>> list=new ArrayList<Map<String, String>>();
-        Map<String,String> map1 =new HashMap<String,String>();
-        map1.put("date","10.3.2014");
-        map1.put("testName","Test1");
-        map1.put("participantsNumber","7 Participants");
-        map1.put("upload",Integer.toString(R.drawable.ic_action_upload));
-        list.add(map1);
-        Map<String,String> map2 =new HashMap<String,String>();
-        map2.put("date","11.3.2014");
-        map2.put("testName","Test2");
-        map2.put("participantsNumber","5 Participants");
-        map2.put("upload",Integer.toString(R.drawable.ic_action_upload));
-        list.add(map2);
+        Test test;
+        Map<String,String> map;
+        for(int i=0;i<tests.size();i++){
+            map =new HashMap<String,String>();
+            test=tests.get(i);
+            SimpleDateFormat dateFormat = new SimpleDateFormat("d.M.yyyy");
+            map.put("id",Long.toString(test.getId()));
+            map.put("timestamp",dateFormat.format(new Date(test.getTimestamp() * 1000)));
+            map.put("testName",test.getName());
+            map.put("participantNumber",Integer.toString(test.getParticipants().size()));
+            if(test.isUploaded()){
+                map.put("uploaded",Integer.toString(R.drawable.ic_action_cloud));
+            }else{
+                map.put("uploaded",Integer.toString(R.drawable.ic_action_upload));
+            }
+            list.add(map);
+        }
         return list;
     }
 
