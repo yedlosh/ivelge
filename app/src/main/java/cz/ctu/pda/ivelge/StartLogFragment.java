@@ -1,15 +1,10 @@
 package cz.ctu.pda.ivelge;
 
-import android.app.Activity;
 import android.app.ListFragment;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
 import java.text.SimpleDateFormat;
@@ -21,13 +16,12 @@ import java.util.Map;
 
 
 /**
- * A simple {@link Fragment} subclass.
+ * A simple {@link android.app.Fragment} subclass.
  */
-public class LogFragment extends ListFragment {
+public class StartLogFragment extends ListFragment {
     private CategoryDataSource categoryDataSource;
     private LogDataSource logDataSource;
     private List<Log>logs;
-    private long logId;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,17 +53,6 @@ public class LogFragment extends ListFragment {
         return rootView;
     }
 
-    @Override
-    public void onListItemClick (ListView l, View v, int position, long id){
-        Map itemMap = (Map) getListAdapter().getItem(position);
-        Intent intent=new Intent(this.getActivity(),EventDetailActivity.class);
-        Bundle b=new Bundle();
-        b.putString("logId",(String)itemMap.get("id"));
-        intent.putExtras(b);
-        startActivity(intent);
-    }
-
-
     private List<Map<String, String>> getdata(List<Log> logs){
         categoryDataSource.open();
 
@@ -95,13 +78,4 @@ public class LogFragment extends ListFragment {
     }
 
 
-    /*public void showComments(View view) {
-        Map itemMap = (Map) getListAdapter().getItem(position);
-        Intent intent=new Intent(this.getActivity(), EventDetailActivity.class);
-        Bundle b=new Bundle();
-        b.putLong("logId",session.getId());
-        intent.putExtras(b);
-        startActivity(intent);
-    }
-*/
 }

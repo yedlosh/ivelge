@@ -88,6 +88,7 @@ public class ParticipantDetailActivity extends ActionBarActivity {
         Bundle b=new Bundle();
         b.putLong("sessionId",session.getId());
         b.putString("name",session.getParticipantName());
+        b.putLong("endTime",session.getEndTime());
         intent.putExtras(b);
         startActivity(intent);
     }

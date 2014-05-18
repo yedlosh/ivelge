@@ -6,44 +6,43 @@ import android.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.widget.TextView;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 
-public class SessionActivity extends ActionBarActivity implements
+public class StartSessionActivity extends ActionBarActivity implements
         ActionBar.TabListener {
-
     private ViewPager viewPager;
     private TabsPagerAdapter mAdapter;
     private ActionBar actionBar;
+    private TestDataSource dataSource;
+    private ArrayAdapter<String> spAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_session);
+        setContentView(R.layout.activity_start_session);
+        dataSource=new TestDataSource(this);
+        dataSource.open();
         Bundle b = getIntent().getExtras();
         this.setTitle(b.getString("name"));
-        long endTime=b.getLong("endTime");
-        TextView finish=(TextView)findViewById(R.id.finished_text);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("H:mm");
-        finish.setText(dateFormat.format(new Date(endTime * 1000)));
-        // Initilization
+        long testId=b.getLong("testId");
+        Test test=dataSource.getTest(testId);
+        Spinner spinner=(Spinner)findViewById(R.id.tasks_spinner);
+        spAdapter=new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,test.getTasks());
+        spAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
         viewPager = (ViewPager) findViewById(R.id.pager);
         actionBar = getActionBar();
         mAdapter = new TabsPagerAdapter(getFragmentManager());
-
         viewPager.setAdapter(mAdapter);
-        // actionBar.setHomeButtonEnabled(false);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         this.setTabs();
-
-        /**
-         * on swiping the viewpager make respective tab selected
-         * */
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
             @Override
@@ -67,6 +66,7 @@ public class SessionActivity extends ActionBarActivity implements
         List<Fragment> fragmentList = new ArrayList<Fragment>();
         actionBar.addTab(actionBar.newTab().setText(R.string.log)
                 .setTabListener(this));
+        //fragmentList.add(new StartLogFragment());
         fragmentList.add(new LogFragment());
         actionBar.addTab(actionBar.newTab().setText(R.string.map)
                 .setTabListener(this));
@@ -75,20 +75,44 @@ public class SessionActivity extends ActionBarActivity implements
         this.mAdapter.setTabFragment(fragmentList);
 
     }
-
     @Override
-    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
+    protected void onDestroy() {
+        dataSource.close();
+        super.onDestroy();
     }
 
     @Override
-    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
-        // on tab selected
-        // show respected fragment view
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.start_session, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        if (id == R.id.end_session) {
+            //todo END SESSION
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
         viewPager.setCurrentItem(tab.getPosition());
     }
 
     @Override
-    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
+    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+
     }
 
+    @Override
+    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+
+    }
 }
