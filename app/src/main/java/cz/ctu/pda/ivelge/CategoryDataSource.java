@@ -41,7 +41,7 @@ public class CategoryDataSource {
                 allColumns, null, null, null, null, null);
 
         if (cursor.getCount() == 0) {
-            return null;
+            return categories;
         }
 
         cursor.moveToFirst();

@@ -72,7 +72,7 @@ public class SessionDataSource {
                 allColumns, null, null, null, null, null);
 
         if (cursor.getCount() == 0) {
-            return null;
+            return sessions;
         }
 
         cursor.moveToFirst();
@@ -101,7 +101,7 @@ public class SessionDataSource {
                 allColumns, DatabaseSQLiteHelper.SESSION_TESTID + " = " + testId, null, null, null, null);
 
         if (cursor.getCount() == 0) {
-            return null;
+            return sessions;
         }
 
         cursor.moveToFirst();
