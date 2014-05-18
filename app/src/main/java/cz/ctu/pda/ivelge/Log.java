@@ -15,7 +15,8 @@ public class Log {
     private File photo;
     private long sessionId;
     private long categoryId;
-    private long subcategoryIndex;
+    private int subcategoryIndex;
+    private String task;
 
     public Log(long timestamp, long sessionId) {
         id = -1;
@@ -23,7 +24,7 @@ public class Log {
         this.sessionId = sessionId;
     }
 
-    public Log(long id, long timestamp, int priority, String location, String description, File photo, long sessionId, long categoryId, long subcategoryIndex) {
+    public Log(long id, long timestamp, int priority, String location, String description, File photo, long sessionId, long categoryId, int subcategoryIndex) {
         this.id = id;
         this.timestamp = timestamp;
         this.priority = priority;
@@ -99,11 +100,15 @@ public class Log {
         this.categoryId = categoryId;
     }
 
-    public long getSubcategoryIndex() {
+    public int getSubcategoryIndex() {
         return subcategoryIndex;
     }
 
-    public void setSubcategoryIndex(long subcategoryIndex) {
+    public void setSubcategoryIndex(int subcategoryIndex) {
         this.subcategoryIndex = subcategoryIndex;
+    }
+
+    public String getTask(){
+        return task;
     }
 }

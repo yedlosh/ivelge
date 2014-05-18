@@ -16,10 +16,15 @@
             android:layout_marginLeft="10dp"
             android:text="0:25"/>
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/log_item_priority_label"
+            />
+        <TextView
             android:id="@+id/log_item_priority"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Priority 2"
+            android:text="2"
             />
         <TextView
             android:layout_width="wrap_content"
@@ -49,12 +54,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="40dp"
-            android:text="Category"/>
-        <TextView
-            android:id="@+id/log_item_subcategory2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="60dp"
             android:text="Category"/>
     </LinearLayout>
 

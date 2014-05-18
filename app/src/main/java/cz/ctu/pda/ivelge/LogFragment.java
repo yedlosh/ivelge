@@ -39,8 +39,8 @@ public class LogFragment extends ListFragment {
         logDataSource.open();
         logs=logDataSource.getSessionLogs(sessionId);
         List<Map<String, String>> list=getdata(logs);
-        String[] from = {"timestamp", "priority", "task","category","subcategory1","subcategory2"};
-        int[] to={R.id.log_item_time,R.id.log_item_priority,R.id.log_item_task,R.id.log_item_category,R.id.log_item_subcategory1,R.id.log_item_subcategory2};
+        String[] from = {"timestamp", "priority", "task","category","subcategory1"};
+        int[] to={R.id.log_item_time,R.id.log_item_priority,R.id.log_item_task,R.id.log_item_category,R.id.log_item_subcategory1};
         SimpleAdapter adapter = new SimpleAdapter(this.getActivity(),list,R.layout.log_list_item,from,to);
         setListAdapter(adapter);
 
@@ -58,9 +58,7 @@ public class LogFragment extends ListFragment {
     }
 
     private List<Map<String, String>> getdata(List<Log> logs){
-        //todo vyresit kategorie
-        // categoryDataSource.open();
-        //Category category=categoryDataSource.getCategory()
+        categoryDataSource.open();
 
         List<Map<String, String>> list=new ArrayList<Map<String, String>>();
         Log log;
@@ -73,13 +71,12 @@ public class LogFragment extends ListFragment {
             map.put("timestamp",dateFormat.format(new Date(log.getTimestamp() * 1000)));
             map.put("priority",Integer.toString(log.getPriority()));
             map.put("task",log.getTask());
-            if(test.isUploaded()){
-                map.put("uploaded",Integer.toString(R.drawable.ic_action_cloud));
-            }else{
-                map.put("uploaded",Integer.toString(R.drawable.ic_action_upload));
-            }
+            Category category=categoryDataSource.getCategory(log.getCategoryId());
+            map.put("category",category.getName());
+            map.put("subcategory",category.getSubcategories().get(log.getSubcategoryIndex()));
             list.add(map);
         }
+        categoryDataSource.close();
         return list;
     }
 
