@@ -28,7 +28,8 @@
     <string name="new_test_name_label">Name</string>
     <string name="new_test_participants_label">Participants</string>
     <string name="new_test_tasks_label">Tasks</string>
-    <string name="title_activity_event_detail">EventDetailActivity</string>
-
+    <string name="title_activity_event_detail">Event Detail</string>
+    <string name="title_activity_new_event">New Event</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>
