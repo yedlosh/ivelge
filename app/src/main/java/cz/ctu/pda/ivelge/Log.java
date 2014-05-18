@@ -17,6 +17,8 @@ public class Log {
     private long categoryId;
     private int subcategoryIndex;
     private int taskIndex;
+    private double latitude;
+    private double longitude; 
 
     public Log(long timestamp, long sessionId) {
         id = -1;
@@ -24,7 +26,7 @@ public class Log {
         this.sessionId = sessionId;
     }
 
-    public Log(long id, long timestamp, int priority, String location, String description, File photo, long sessionId, long categoryId, int subcategoryIndex, int taskIndex) {
+    public Log(long id, long timestamp, int priority, String location, String description, File photo, long sessionId, long categoryId, int subcategoryIndex, int taskIndex,double latitude ,double longitude) {
         this.id = id;
         this.timestamp = timestamp;
         this.priority = priority;
@@ -35,6 +37,8 @@ public class Log {
         this.categoryId = categoryId;
         this.subcategoryIndex = subcategoryIndex;
         this.taskIndex = taskIndex;
+        this.latitude=latitude;
+        this.longitude=longitude;
     }
 
     public long getId() {
@@ -115,5 +119,21 @@ public class Log {
 
     public void setTaskIndex(int taskIndex) {
         this.taskIndex = taskIndex;
+    }
+    
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 }
