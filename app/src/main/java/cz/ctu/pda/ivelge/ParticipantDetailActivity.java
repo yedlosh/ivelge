@@ -1,5 +1,6 @@
 package cz.ctu.pda.ivelge;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -19,6 +20,7 @@ import java.util.Map;
 
 public class ParticipantDetailActivity extends ActionBarActivity {
     private SessionDataSource dataSource;
+    private Session session;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,7 +31,7 @@ public class ParticipantDetailActivity extends ActionBarActivity {
         long testId=b.getLong("testId");
         int position=b.getInt("position");
         List<Session> sessions=dataSource.getTestSessions(testId);
-        Session session=getdata(sessions,position);
+        session=getdata(sessions,position);
         EditText pretest=(EditText)findViewById(R.id.pretest);
         pretest.setText(session.getPreTest());
         TextView posttest_label=(TextView)findViewById(R.id.posttest_label);
@@ -81,7 +83,12 @@ public class ParticipantDetailActivity extends ActionBarActivity {
 
 
     public void viewLog(View view) {
-        //TODO
+        Intent intent=new Intent(this, SessionActivity.class);
+        Bundle b=new Bundle();
+        b.putLong("sessionId",session.getId());
+        b.putString("name",session.getParticipantName());
+        intent.putExtras(b);
+        startActivity(intent);
     }
 
     public void sendMessage(View view) {

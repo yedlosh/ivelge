@@ -17,14 +17,13 @@ public class SessionActivity extends ActionBarActivity implements
     private ViewPager viewPager;
     private TabsPagerAdapter mAdapter;
     private ActionBar actionBar;
-    // Tab titles
-    private String[] tabs = {"Log", "Map"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_session);
-
+        Bundle b = getIntent().getExtras();
+        this.setTitle(b.getString("name"));
         // Initilization
         viewPager = (ViewPager) findViewById(R.id.pager);
         actionBar = getActionBar();
@@ -59,11 +58,10 @@ public class SessionActivity extends ActionBarActivity implements
 
     private void setTabs() {
         List<Fragment> fragmentList = new ArrayList<Fragment>();
-        actionBar.addTab(actionBar.newTab().setText("LOG")
+        actionBar.addTab(actionBar.newTab().setText(R.string.log)
                 .setTabListener(this));
-        fragmentList.add(new LogListFragment());
-
-        actionBar.addTab(actionBar.newTab().setText("MAP")
+        fragmentList.add(new LogFragment());
+        actionBar.addTab(actionBar.newTab().setText(R.string.map)
                 .setTabListener(this));
         fragmentList.add(new LogMapFragment());
 
