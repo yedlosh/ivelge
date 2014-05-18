@@ -14,6 +14,8 @@ public class Log {
     private String description;
     private File photo;
     private long sessionId;
+    private long categoryId;
+    private long subcategoryIndex;
 
     public Log(long timestamp, long sessionId) {
         id = -1;
@@ -21,7 +23,7 @@ public class Log {
         this.sessionId = sessionId;
     }
 
-    public Log(long id, long timestamp, int priority, String location, String description, File photo, long sessionId) {
+    public Log(long id, long timestamp, int priority, String location, String description, File photo, long sessionId, long categoryId, long subcategoryIndex) {
         this.id = id;
         this.timestamp = timestamp;
         this.priority = priority;
@@ -29,6 +31,8 @@ public class Log {
         this.description = description;
         this.photo = photo;
         this.sessionId = sessionId;
+        this.categoryId = categoryId;
+        this.subcategoryIndex = subcategoryIndex;
     }
 
     public long getId() {
@@ -85,5 +89,21 @@ public class Log {
 
     public void setSessionId(long sessionId) {
         this.sessionId = sessionId;
+    }
+
+    public long getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(long categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public long getSubcategoryIndex() {
+        return subcategoryIndex;
+    }
+
+    public void setSubcategoryIndex(long subcategoryIndex) {
+        this.subcategoryIndex = subcategoryIndex;
     }
 }
