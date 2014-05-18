@@ -89,6 +89,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="SessionActivity" />
         </activity>
+        <activity
+            android:name="cz.ctu.pda.ivelge.EventEditActivity"
+            android:label="@string/title_activity_event_edit" >
+        </activity>
     </application>
 
 </manifest>
