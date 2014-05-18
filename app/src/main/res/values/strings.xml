@@ -23,13 +23,12 @@
     <string name="test_detail_list_item_finished">Finished:</string>
     <string name="test_detail_list_item_duration">Duration:</string>
     <string name="test_detail_list_item_logs">Logs:</string>
-<<<<<<< HEAD
     <string name="log_item_priority_label">Priority </string>
     <string name="title_activity_new_test">New Test</string>
     <string name="new_test_name_label">Name</string>
-=======
+    <string name="new_test_participants_label">Participants</string>
+    <string name="new_test_tasks_label">Tasks</string>
     <string name="title_activity_event_detail">EventDetailActivity</string>
-    <string name="hello_world">Hello world!</string>
->>>>>>> 357082ef57894057f01f8e02424267d18bf41024
+
 
 </resources>
