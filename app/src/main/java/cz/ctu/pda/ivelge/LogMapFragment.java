@@ -1,5 +1,6 @@
 package cz.ctu.pda.ivelge;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,35 +15,30 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.List;
 
 
 public class LogMapFragment extends Fragment {
 
-    static final LatLng HAMBURG = new LatLng(53.558, 9.927);
-    static final LatLng KIEL = new LatLng(53.551, 9.993);
+    private SessionDataSource dataSource;
     private GoogleMap map;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Activity parentActivity = getActivity();
         map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
                 .getMap();
-        Marker hamburg = map.addMarker(new MarkerOptions().position(HAMBURG)
-                .title("Hamburg"));
-        Marker kiel = map.addMarker(new MarkerOptions()
-                .position(KIEL)
-                .title("Kiel")
-                .snippet("Kiel is cool")
-                .icon(BitmapDescriptorFactory
-                        .fromResource(R.drawable.ic_launcher)));
+        dataSource = new SessionDataSource(parentActivity);
+        dataSource.open();
 
-        // Move the camera instantly to hamburg with a zoom of 15.
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(HAMBURG, 15));
-
-        // Zoom in, animating the camera.
-        map.animateCamera(CameraUpdateFactory.zoomTo(10), 2000, null);
+        Bundle b = parentActivity.getIntent().getExtras();
+        Long id = Long.parseLong(b.getString("id"));
+        Session session = dataSource.getSession(id);
+        List<Log> logs = session.getLogs();
+        createMarks(logs);
     }
-
 
 
     @Override
@@ -52,5 +48,22 @@ public class LogMapFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_map, container, false);
 
         return rootView;
+    }
+
+    private void createMarks(List<Log> logs) {
+        LatLng startCoord = null;
+        for (Log log : logs) {
+            String title = "Priorita : " + log.getPriority();
+            LatLng coordinates = new LatLng(log.getLatitude(), log.getLongitude());
+            map.addMarker(new MarkerOptions().position(coordinates)
+                    .title(title).snippet(log.getDescription())
+                    .icon(BitmapDescriptorFactory
+                            .fromResource(R.drawable.ic_launcher)));
+            if (startCoord == null) {
+                startCoord = coordinates;
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(startCoord, 15));
+
+            }
+        }
     }
 }

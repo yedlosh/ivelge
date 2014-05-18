@@ -60,7 +60,7 @@ public class SessionActivity extends ActionBarActivity implements
         List<Fragment> fragmentList = new ArrayList<Fragment>();
         actionBar.addTab(actionBar.newTab().setText(R.string.log)
                 .setTabListener(this));
-        fragmentList.add(new LogListFragment());
+        fragmentList.add(new LogFragment());
         actionBar.addTab(actionBar.newTab().setText(R.string.map)
                 .setTabListener(this));
         fragmentList.add(new LogMapFragment());

@@ -20,11 +20,6 @@ import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link LogFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link LogFragment#newInstance} factory method to
- * create an instance of this fragment.
  */
 public class LogFragment extends ListFragment {
     private CategoryDataSource categoryDataSource;
@@ -43,9 +38,13 @@ public class LogFragment extends ListFragment {
         int[] to={R.id.log_item_time,R.id.log_item_priority,R.id.log_item_task,R.id.log_item_category,R.id.log_item_subcategory1};
         SimpleAdapter adapter = new SimpleAdapter(this.getActivity(),list,R.layout.log_list_item,from,to);
         setListAdapter(adapter);
+    }
 
-
-
+    @Override
+    public void onDestroy() {
+        categoryDataSource.close();
+        logDataSource.close();
+        super.onDestroy();
     }
 
     @Override
@@ -70,7 +69,8 @@ public class LogFragment extends ListFragment {
             map.put("id",Long.toString(log.getId()));
             map.put("timestamp",dateFormat.format(new Date(log.getTimestamp() * 1000)));
             map.put("priority",Integer.toString(log.getPriority()));
-            map.put("task",log.getTask());
+            //todo
+            map.put("task","vyresit.....");
             Category category=categoryDataSource.getCategory(log.getCategoryId());
             map.put("category",category.getName());
             map.put("subcategory",category.getSubcategories().get(log.getSubcategoryIndex()));

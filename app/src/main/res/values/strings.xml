@@ -23,6 +23,8 @@
     <string name="test_detail_list_item_finished">Finished:</string>
     <string name="test_detail_list_item_duration">Duration:</string>
     <string name="test_detail_list_item_logs">Logs:</string>
+    <string name="log_item_priority_label">Priority </string>
+
 
 
 
