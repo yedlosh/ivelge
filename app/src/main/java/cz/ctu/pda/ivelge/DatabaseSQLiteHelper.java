@@ -54,27 +54,27 @@ public class DatabaseSQLiteHelper extends SQLiteOpenHelper {
     // Table creation sql statements
     private static final String TEST_CREATE = "create table "
             + TABLE_TEST + "("
-            + TEST_ID + " integer primary key autoincrement, "
+            + TEST_ID + " integer primary key not null, "
             + TEST_NAME + " text not null, "
-            + TEST_TASKS + " integer not null"
-            + TEST_CATEGORIES + "text"
+            + TEST_TASKS + " integer not null, "
+            + TEST_CATEGORIES + " text not null, "
             + TEST_TIMESTAMP + " integer not null, "
             + TEST_UPLOADED + " integer" + ");";
 
     private static final String SESSION_CREATE = "create table "
             + TABLE_SESSION + "("
-            + SESSION_ID + " integer primary key autoincrement, "
+            + SESSION_ID + " integer primary key not null, "
             + SESSION_STARTTIME + " integer not null, "
             + SESSION_ENDTIME + " integer not null, "
             + SESSION_PRETEST + " text, "
-            + SESSION_POSTTEST + " text"
-            + SESSION_TESTID + " integer"
-            + SESSION_PARTICIPANTNAME + " text not null"
-            + "FOREIGN KEY("+ SESSION_TESTID + ") REFERENCES "+ TABLE_TEST +"("+TEST_ID+")" + ");";
+            + SESSION_POSTTEST + " text, "
+            + SESSION_TESTID + " integer, "
+            + SESSION_PARTICIPANTNAME + " text not null,"
+            + " FOREIGN KEY("+ SESSION_TESTID + ") REFERENCES "+ TABLE_TEST +"("+TEST_ID+")" + ");";
 
     private static final String LOG_CREATE = "create table "
             + TABLE_LOG + "("
-            + LOG_ID + " integer primary key autoincrement, "
+            + LOG_ID + " integer primary key not null, "
             + LOG_TIMESTAMP + " integer not null, "
             + LOG_PRIORITY + " integer, "
             + LOG_LATITUDE + " real, "
@@ -85,11 +85,11 @@ public class DatabaseSQLiteHelper extends SQLiteOpenHelper {
             + LOG_CATEGORYID + " integer not null, "
             + LOG_SUBCATEGORYINDEX + " integer, "
             + LOG_TASKINDEX + " integer not null, "
-            + "FOREIGN KEY("+ LOG_SESSIONID + ") REFERENCES "+ TABLE_SESSION +"("+SESSION_ID+")" + ");";
+            + " FOREIGN KEY("+ LOG_SESSIONID + ") REFERENCES "+ TABLE_SESSION +"("+SESSION_ID+")" + ");";
 
     private static final String CATEGORY_CREATE = "create table "
             + TABLE_CATEGORY + "("
-            + CATEGORY_ID + " integer primary key autoincrement, "
+            + CATEGORY_ID + " integer primary key not null, "
             + CATEGORY_NAME + " text not null, "
             + CATEGORY_SUBCATEGORIES + " text" + ");";
 
@@ -116,6 +116,7 @@ public class DatabaseSQLiteHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_TEST);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SESSION);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_LOG);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_CATEGORY);
         onCreate(db);
     }
 
