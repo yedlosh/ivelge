@@ -91,7 +91,7 @@ public class MainActivity extends ListActivity {
             map.put("id",Long.toString(test.getId()));
             map.put("timestamp",dateFormat.format(new Date(test.getTimestamp() * 1000)));
             map.put("testName",test.getName());
-            map.put("participantNumber",Integer.toString(test.getParticipants().size()));
+            map.put("participantNumber",Integer.toString(test.getSessions().size()));
             if(test.isUploaded()){
                 map.put("uploaded",Integer.toString(R.drawable.ic_action_cloud));
             }else{

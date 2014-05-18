@@ -23,6 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/map_text"
+        android:textAppearance="?android:textAppearanceMedium"
         android:text="@string/final_time"
         />
     <TextView
@@ -31,6 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/map_text"
         android:layout_toRightOf="@id/final_time"
+        android:textAppearance="?android:textAppearanceMedium"
         android:text="00:26:21"
         />
 

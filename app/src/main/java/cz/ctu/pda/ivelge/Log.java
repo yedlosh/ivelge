@@ -14,6 +14,8 @@ public class Log {
     private String description;
     private File photo;
     private long sessionId;
+    private String task;
+    private long categoryId;
 
     public Log(long timestamp, long sessionId) {
         id = -1;
@@ -85,5 +87,18 @@ public class Log {
 
     public void setSessionId(long sessionId) {
         this.sessionId = sessionId;
+    }
+
+    public String getTask(){
+        return task;
+    }
+    public void setTask(String task){
+        this.task=task;
+    }
+    public long getCategoryId(){
+        return categoryId;
+    }
+    public void setCategoryId(long id){
+        this.categoryId=id;
     }
 }
