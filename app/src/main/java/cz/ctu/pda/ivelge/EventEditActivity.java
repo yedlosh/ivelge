@@ -61,12 +61,17 @@ public class EventEditActivity extends ActionBarActivity {
         Category category = categoryDataSource.getCategory(log.getCategoryId());
         String subCategory = category.getSubcategory(log.getSubcategoryIndex());
 
+        //Category
         Spinner categorySpinner = (Spinner) findViewById(R.id.edit_Category);
-        List<String> list = categoryListToString(categoryDataSource.getAllCategories());
+        List<String> list = CommonUttils.categoryListToString(categoryDataSource.getAllCategories());
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, list);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         categorySpinner.setAdapter(dataAdapter);
+
+        //Priority
+
+
 
 
         TextView categoryLabel = (TextView) findViewById(R.id.eventCategory);
@@ -93,12 +98,5 @@ public class EventEditActivity extends ActionBarActivity {
 
     }
 
-    private List<String> categoryListToString(List<Category> categories) {
-        List<String> stringCat = new ArrayList();
-        for (Category category : categories) {
-            stringCat.add(category.getName());
 
-        }
-        return stringCat;
-    }
 }
