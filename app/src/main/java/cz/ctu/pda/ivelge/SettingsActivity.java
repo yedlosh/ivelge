@@ -1,6 +1,7 @@
 package cz.ctu.pda.ivelge;
 
 import android.content.SharedPreferences;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -14,13 +15,17 @@ public class SettingsActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_settings);
+
+        EditText serverAddress = (EditText) findViewById(R.id.server_address);
+        serverAddress.setHint(R.string.ip_hint);
 
         SharedPreferences sp = getSharedPreferences("ivelge", MODE_PRIVATE);
 
-        String ip = sp.getString("serverIP","Enter server IP...");
-        EditText serverAddress = (EditText) findViewById(R.id.server_address);
-        serverAddress.setText(ip);
+        if (sp.contains("serverIP")) {
+            serverAddress.setText(sp.getString("serverIP", "none"));
+        }
     }
 
 
@@ -43,10 +48,15 @@ public class SettingsActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void saveSettings(View view){
+    public void saveSettings(View view) {
         EditText serverAddress = (EditText) findViewById(R.id.server_address);
+        android.util.Log.i(SettingsActivity.class.getName(), "Saving ip address: " + serverAddress.getText().toString());
+
         SharedPreferences sp = getSharedPreferences("ivelge", MODE_PRIVATE);
         SharedPreferences.Editor ed = sp.edit();
-        ed.putString("serverIP",serverAddress.getText().toString());
+        ed.putString("serverIP", serverAddress.getText().toString());
+        ed.commit();
+
+        NavUtils.navigateUpFromSameTask(this);
     }
 }
