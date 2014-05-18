@@ -40,6 +40,10 @@ public class CategoryDataSource {
         Cursor cursor = database.query(DatabaseSQLiteHelper.TABLE_CATEGORY,
                 allColumns, null, null, null, null, null);
 
+        if (cursor.getCount() == 0) {
+            return null;
+        }
+
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             Category category = cursorToCategory(cursor);

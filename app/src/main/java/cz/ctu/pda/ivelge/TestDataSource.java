@@ -49,6 +49,10 @@ public class TestDataSource {
         Cursor cursor = database.query(DatabaseSQLiteHelper.TABLE_TEST,
                 allColumns, null, null, null, null, null);
 
+        if (cursor.getCount() == 0) {
+            return null;
+        }
+
         cursor.moveToFirst();
 
         CategoryDataSource categoryDAO = new CategoryDataSource(context);

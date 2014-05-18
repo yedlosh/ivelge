@@ -66,6 +66,10 @@ public class LogDataSource {
         Cursor cursor = database.query(DatabaseSQLiteHelper.TABLE_LOG,
                 allColumns, DatabaseSQLiteHelper.LOG_SESSIONID + " = " + sessionId, null, null, null, null);
 
+        if (cursor.getCount() == 0) {
+            return null;
+        }
+
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             Log log  = cursorToLog(cursor);
