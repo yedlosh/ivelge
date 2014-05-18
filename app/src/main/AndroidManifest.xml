@@ -40,15 +40,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="TestDetail" />
         </activity>
-        <activity
-            android:name="cz.ctu.pda.ivelge.LogActivity"
-            android:label="@string/title_activity_log"
-            android:parentActivityName="cz.ctu.pda.ivelge.ParticipantDetailActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="ParticipantDetailActivity" />
-        </activity>
-                <activity android:name="cz.ctu.pda.ivelge.SessionActivity"
+        <activity android:name="cz.ctu.pda.ivelge.SessionActivity"
             android:label="Session"
             >
         </activity>

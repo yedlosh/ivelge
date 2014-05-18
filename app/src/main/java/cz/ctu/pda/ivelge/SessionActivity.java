@@ -37,13 +37,6 @@ public class SessionActivity extends ActionBarActivity implements
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         this.setTabs();
 
-        // Adding Tabs
-      /*  for (String tab_name : tabs) {
-            actionBar.addTab(actionBar.newTab().setText(tab_name)
-                    .setTabListener(this));
-        }
-        */
-
         /**
          * on swiping the viewpager make respective tab selected
          * */
@@ -70,9 +63,9 @@ public class SessionActivity extends ActionBarActivity implements
         List<Fragment> fragmentList = new ArrayList<Fragment>();
         actionBar.addTab(actionBar.newTab().setText("LOG")
                 .setTabListener(this));
-        fragmentList.add(new LogFragment());
+        fragmentList.add(new LogListFragment());
 
-        actionBar.addTab(actionBar.newTab().setText("LOG")
+        actionBar.addTab(actionBar.newTab().setText("MAP")
                 .setTabListener(this));
         fragmentList.add(new MapFragment());
 
