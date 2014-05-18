@@ -51,4 +51,8 @@ public class Category {
     public void addSubcategory(String subcategory){
         subcategories.add(subcategory);
     }
+
+    public String getSubcategory(int index){
+        return subcategories.get(index);
+    }
 }
