@@ -195,6 +195,15 @@ public class TestDataSource {
 
     public boolean insertTest(Test test) {
 
+        Category cat1 = new Category("Category 1");
+        cat1.addSubcategory("subcat1");
+        cat1.addSubcategory("subcat2");
+        Category cat2 = new Category("Category 2");
+        cat2.addSubcategory("subcat A");
+        cat2.addSubcategory("subcat B");
+        test.addCategory(cat1);
+        test.addCategory(cat2);
+
         CategoryDataSource categoryDAO = new CategoryDataSource(context);
         categoryDAO.open();
         for (Category cat : test.getCategories())
@@ -210,6 +219,7 @@ public class TestDataSource {
         }
 
         SessionDataSource sessionDAO = new SessionDataSource(context);
+        sessionDAO.open();
         for (Session ses : test.getSessions()) {
             ses.setTestId(test.getId());
             if (!sessionDAO.commitSession(ses)) {

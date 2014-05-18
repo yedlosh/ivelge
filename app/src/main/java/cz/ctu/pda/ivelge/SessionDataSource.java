@@ -94,7 +94,7 @@ public class SessionDataSource {
         return sessions;
     }
 
-    public List<Session> getTestSessions(Long testId){
+    public List<Session> getTestSessions(Long testId) {
         List<Session> sessions = new ArrayList<Session>();
 
         Cursor cursor = database.query(DatabaseSQLiteHelper.TABLE_SESSION,
@@ -137,7 +137,7 @@ public class SessionDataSource {
         return session;
     }
 
-    public boolean commitSession(Session session){
+    public boolean commitSession(Session session) {
         if (session.getTestId() == -1) {
             return false;
         }
@@ -148,10 +148,22 @@ public class SessionDataSource {
         }
         values.put(DatabaseSQLiteHelper.SESSION_STARTTIME, session.getStartTime());
         values.put(DatabaseSQLiteHelper.SESSION_ENDTIME, session.getEndTime());
-        values.put(DatabaseSQLiteHelper.SESSION_PRETEST, session.getPreTest());
-        values.put(DatabaseSQLiteHelper.SESSION_POSTTEST, session.getPostTest());
+
+        if (session.getPreTest() != null) {
+            values.put(DatabaseSQLiteHelper.SESSION_PRETEST, session.getPreTest());
+        } else {
+            values.putNull(DatabaseSQLiteHelper.SESSION_PRETEST);
+        }
+
+        if (session.getPostTest() != null) {
+            values.put(DatabaseSQLiteHelper.SESSION_POSTTEST, session.getPostTest());
+        } else {
+            values.putNull(DatabaseSQLiteHelper.SESSION_POSTTEST);
+        }
         values.put(DatabaseSQLiteHelper.SESSION_TESTID, session.getTestId());
         values.put(DatabaseSQLiteHelper.SESSION_PARTICIPANTNAME, session.getParticipantName());
+
+        android.util.Log.i(SessionDataSource.class.getName(), "Commiting session: \r\n" + values.toString());
 
         long id = database.insertWithOnConflict(DatabaseSQLiteHelper.TABLE_SESSION, null, values, database.CONFLICT_REPLACE);
 

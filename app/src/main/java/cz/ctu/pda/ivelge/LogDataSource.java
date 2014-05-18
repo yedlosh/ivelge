@@ -119,8 +119,16 @@ public class LogDataSource {
         values.put(DatabaseSQLiteHelper.LOG_PRIORITY, log.getPriority());
         values.put(DatabaseSQLiteHelper.LOG_LATITUDE, log.getLatitude());
         values.put(DatabaseSQLiteHelper.LOG_LONGITUDE, log.getLongitude());
+        if(log.getDescription() != null){
         values.put(DatabaseSQLiteHelper.LOG_DESCRIPTION, log.getDescription());
+        } else {
+            values.putNull(DatabaseSQLiteHelper.LOG_DESCRIPTION);
+        }
+        if(log.getPhoto() != null){
         values.put(DatabaseSQLiteHelper.LOG_IMGPATH, log.getPhoto().getAbsolutePath());
+        } else {
+            values.putNull(DatabaseSQLiteHelper.LOG_IMGPATH);
+        }
         values.put(DatabaseSQLiteHelper.LOG_SESSIONID, log.getSessionId());
         values.put(DatabaseSQLiteHelper.LOG_CATEGORYID, log.getCategoryId());
         values.put(DatabaseSQLiteHelper.LOG_SUBCATEGORYINDEX, log.getSubcategoryIndex());

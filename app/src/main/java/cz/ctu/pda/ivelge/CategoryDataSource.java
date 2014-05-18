@@ -80,7 +80,7 @@ public class CategoryDataSource {
         String subcategories = cursor.getString(2);
         List<String> subcategoriesList = null;
 
-        if(!subcategories.isEmpty()) {
+        if(subcategories != null && !subcategories.isEmpty()) {
             subcategoriesList = new ArrayList<String>(Arrays.asList(subcategories.split(",")));
         }
 
@@ -95,7 +95,12 @@ public class CategoryDataSource {
             values.put(DatabaseSQLiteHelper.CATEGORY_ID, category.getId());
         }
         values.put(DatabaseSQLiteHelper.CATEGORY_NAME, category.getName());
-        values.put(DatabaseSQLiteHelper.CATEGORY_SUBCATEGORIES, DatabaseSQLiteHelper.listToCsv(category.getSubcategories(), ','));
+
+        if(!category.getSubcategories().isEmpty()) {
+            values.put(DatabaseSQLiteHelper.CATEGORY_SUBCATEGORIES, DatabaseSQLiteHelper.listToCsv(category.getSubcategories(), ','));
+        } else {
+            values.putNull(DatabaseSQLiteHelper.CATEGORY_SUBCATEGORIES);
+        }
 
         long id = database.insertWithOnConflict(DatabaseSQLiteHelper.TABLE_CATEGORY, null, values, database.CONFLICT_REPLACE);
 
