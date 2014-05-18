@@ -94,6 +94,7 @@ public class NewTestActivity extends ActionBarActivity {
         //???text .setId(i);
         text .setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         linearPart=(LinearLayout)findViewById(R.id.new_test_participants_layout);
+        text.setText("participnat"+linearPart.getChildCount()+1);
         linearPart.addView(text );
     }
     public void addTask(View view){
@@ -101,6 +102,7 @@ public class NewTestActivity extends ActionBarActivity {
         //???text .setId(i);
         text .setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         linearTask=(LinearLayout)findViewById(R.id.new_test_tasks_layout);
+        text.setText("task"+linearTask.getChildCount()+1);
         linearTask.addView(text );
     }
     public void saveNewTest(View view){

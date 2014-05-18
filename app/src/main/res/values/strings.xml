@@ -32,5 +32,7 @@
     <string name="title_activity_new_event">New Event</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_event_edit">EventEditActivity</string>
+    <string name="title_activity_start_session">Participant</string>
+    <string name="end_session">End Session</string>
 
 </resources>

@@ -93,6 +93,10 @@
             android:name="cz.ctu.pda.ivelge.EventEditActivity"
             android:label="@string/title_activity_event_edit" >
         </activity>
+        <activity
+            android:name="cz.ctu.pda.ivelge.StartSessionActivity"
+            android:label="@string/title_activity_start_session" >
+        </activity>
     </application>
 
 </manifest>
