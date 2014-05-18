@@ -78,8 +78,11 @@ public class CategoryDataSource {
         long id = cursor.getLong(0);
         String name = cursor.getString(1);
         String subcategories = cursor.getString(2);
+        List<String> subcategoriesList = null;
 
-        List<String> subcategoriesList = new ArrayList<String>(Arrays.asList(subcategories.split(",")));
+        if(!subcategories.isEmpty()) {
+            subcategoriesList = new ArrayList<String>(Arrays.asList(subcategories.split(",")));
+        }
 
         Category category = new Category(id, name, subcategoriesList);
         return category;
