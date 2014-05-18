@@ -66,6 +66,10 @@ public class LogDataSource {
         Cursor cursor = database.query(DatabaseSQLiteHelper.TABLE_LOG,
                 allColumns, DatabaseSQLiteHelper.LOG_SESSIONID + " = " + sessionId, null, null, null, null);
 
+        if (cursor.getCount() == 0) {
+            return null;
+        }
+
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             Log log  = cursorToLog(cursor);
@@ -92,7 +96,10 @@ public class LogDataSource {
         int taskIndex = cursor.getInt(10);
 
         //File img = new File(context.getFilesDir() + "/img" + imgPath);
-        File img = new File(imgPath);
+        File img = null;
+
+        if(!imgPath.isEmpty())
+        img = new File(imgPath);
 
         Log log = new Log(id, timestamp, priority, latitude, longitude, description, img, sessionId, categoryId, subcategoryIndex, taskIndex);
         return log;

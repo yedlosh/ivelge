@@ -71,6 +71,10 @@ public class SessionDataSource {
         Cursor cursor = database.query(DatabaseSQLiteHelper.TABLE_SESSION,
                 allColumns, null, null, null, null, null);
 
+        if (cursor.getCount() == 0) {
+            return null;
+        }
+
         cursor.moveToFirst();
 
         LogDataSource logDAO = new LogDataSource(context);
@@ -95,6 +99,10 @@ public class SessionDataSource {
 
         Cursor cursor = database.query(DatabaseSQLiteHelper.TABLE_SESSION,
                 allColumns, DatabaseSQLiteHelper.SESSION_TESTID + " = " + testId, null, null, null, null);
+
+        if (cursor.getCount() == 0) {
+            return null;
+        }
 
         cursor.moveToFirst();
 
