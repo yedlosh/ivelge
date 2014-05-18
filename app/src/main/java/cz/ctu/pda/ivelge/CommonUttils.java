@@ -26,4 +26,13 @@ public class CommonUttils {
         }
         return stringCat;
     }
+
+    public static List<String> getAllPriorityInString() {
+        List<String> stringCat = new ArrayList();
+        for (Integer pr : getAllPriority()) {
+            stringCat.add(pr.toString());
+
+        }
+        return stringCat;
+    }
 }

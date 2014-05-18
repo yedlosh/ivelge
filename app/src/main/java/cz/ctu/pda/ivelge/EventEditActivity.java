@@ -1,12 +1,16 @@
 package cz.ctu.pda.ivelge;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -18,6 +22,8 @@ import java.util.List;
 public class EventEditActivity extends ActionBarActivity {
 
     private LogDataSource logDataSource;
+    private SessionDataSource sessiomDataSource;
+    private TestDataSource testDataSource;
     private CategoryDataSource categoryDataSource;
     private long logId;
 
@@ -31,9 +37,38 @@ public class EventEditActivity extends ActionBarActivity {
         this.logId = b.getLong("logId");
         logDataSource.open();
         categoryDataSource.open();
+        testDataSource.open();
+        sessiomDataSource.open();
+
+
         Log log = logDataSource.getLog(logId);
 
         setData(log);
+
+        Spinner spinner = (Spinner) findViewById(R.id.edit_Category);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                Category category=categoryDataSource.getAllCategories().get(position);
+                reloadSubCategory(category);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+
+        });
+    }
+
+    @Override
+    public void onDestroy() {
+        logDataSource.close();
+        categoryDataSource.close();
+        testDataSource.close();
+        sessiomDataSource.close();
+
+        super.onDestroy();
     }
 
 
@@ -69,33 +104,99 @@ public class EventEditActivity extends ActionBarActivity {
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         categorySpinner.setAdapter(dataAdapter);
 
+        categorySpinner.setSelection(list.indexOf(category.getName()));
+
+        //SubCategory
+
+
+        Spinner subSpinner = (Spinner) findViewById(R.id.edit_SubCategory);
+        List<String> subList = category.getSubcategories();
+        ArrayAdapter<String> sDataAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, subList);
+        sDataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        subSpinner.setAdapter(sDataAdapter);
+
+        subSpinner.setSelection(log.getSubcategoryIndex());
+
+
         //Priority
 
+        Spinner prioritySpinner = (Spinner) findViewById(R.id.edit_Priority);
+        List<String> priorityList = CommonUttils.getAllPriorityInString();
+        ArrayAdapter<String> prDataAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, priorityList);
+        prDataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        prioritySpinner.setAdapter(prDataAdapter);
 
+        prioritySpinner.setSelection(priorityList.indexOf(log.getPriority()));
 
+        //Task
+        Session session=sessiomDataSource.getSession(log.getSessionId());
+        Test test=testDataSource.getTest(session.getTestId());
 
-        TextView categoryLabel = (TextView) findViewById(R.id.eventCategory);
-        categoryLabel.setText(category.getName());
+        Spinner taskSpinner = (Spinner) findViewById(R.id.edit_Task);
+        List<String> taskList = test.getTasks();
+        ArrayAdapter<String> tDataAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, taskList);
+        tDataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        taskSpinner.setAdapter(tDataAdapter);
 
-        TextView subCategoryLabel = (TextView) findViewById(R.id.eventSubCategory);
-        subCategoryLabel.setText(subCategory);
+        taskSpinner.setSelection(log.getTaskIndex());
 
-        TextView descriptionLabel = (TextView) findViewById(R.id.eventDescription);
-        descriptionLabel.setText(log.getDescription());
+       EditText description=(EditText) findViewById(R.id.edit_Description);
+        description.setText(log.getDescription());
 
-        TextView priorityLabel = (TextView) findViewById(R.id.eventPriority);
-        priorityLabel.setText(log.getPriority());
-
-        TextView taskLabel = (TextView) findViewById(R.id.eventTask);
-        taskLabel.setText("Task " + log.getTaskIndex());
-
-        TextView timeLabel = (TextView) findViewById(R.id.eventTime);
-        timeLabel.setText(new Long(log.getTimestamp()).toString());
-
-        ImageView image = (ImageView) findViewById(R.id.eventImage);
+        ImageView image = (ImageView) findViewById(R.id.edit_Img);
         Bitmap bitmap = BitmapFactory.decodeFile(log.getPhoto().getAbsolutePath());
         image.setImageBitmap(bitmap);
 
+    }
+
+    public void saveLog(View view) {
+        Log log = logDataSource.getLog(logId);
+
+        Spinner categorySpinner = (Spinner) findViewById(R.id.edit_Category);
+        Integer categoryPos=categorySpinner.getSelectedItemPosition();
+        Category category=categoryDataSource.getAllCategories().get(categoryPos);
+        log.setCategoryId(category.getId());
+
+        Spinner subSpinner = (Spinner) findViewById(R.id.edit_SubCategory);
+        Integer subPos=subSpinner.getSelectedItemPosition();
+        log.setSubcategoryIndex(subPos);
+
+        Spinner prioritySpinner = (Spinner) findViewById(R.id.edit_Priority);
+        Integer prPos=prioritySpinner.getSelectedItemPosition();
+        log.setPriority(prPos+1);
+
+        Spinner taskSpinner = (Spinner) findViewById(R.id.edit_Task);
+        Integer tPos=taskSpinner.getSelectedItemPosition();
+        log.setTaskIndex(tPos);
+
+        EditText description=(EditText) findViewById(R.id.edit_Description);
+        log.setDescription(description.getText().toString());
+
+        //  ImageView image = (ImageView) findViewById(R.id.edit_Img);
+
+        logDataSource.commitLog(log);
+        resetLog(view);
+
+
+    }
+
+    public void resetLog(View view) {
+        Log log = logDataSource.getLog(logId);
+        Intent intent = new Intent(this, SessionActivity.class);
+        intent.putExtra("sessionId", log.getSessionId());
+        startActivity(intent);
+    }
+
+    private void reloadSubCategory(Category category){
+        Spinner subSpinner = (Spinner) findViewById(R.id.edit_SubCategory);
+        List<String> subList = category.getSubcategories();
+        ArrayAdapter<String> sDataAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, subList);
+        sDataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        subSpinner.setAdapter(sDataAdapter);
     }
 
 

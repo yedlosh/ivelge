@@ -121,8 +121,7 @@ public class EventDetailActivity extends ActionBarActivity {
     }
 
     public void sendMessage(View view) {
-        //TODO pridat spravnou class
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, EventEditActivity.class);
         intent.putExtra("logId", logId);
         startActivity(intent);
     }
