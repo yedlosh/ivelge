@@ -12,7 +12,8 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/server_address"/>
+        android:text="@string/server_address"
+        android:textAppearance="?android:textAppearanceMedium"/>
     <EditText
         android:id="@+id/server_address"
         android:layout_width="match_parent"
