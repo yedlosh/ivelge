@@ -178,13 +178,15 @@ public class EventEditActivity extends ActionBarActivity {
         //  ImageView image = (ImageView) findViewById(R.id.edit_Img);
 
         logDataSource.commitLog(log);
+        resetLog(view);
 
 
     }
 
     public void resetLog(View view) {
+        Log log = logDataSource.getLog(logId);
         Intent intent = new Intent(this, SessionActivity.class);
-        intent.putExtra("logId", logId);
+        intent.putExtra("sessionId", log.getSessionId());
         startActivity(intent);
     }
 
