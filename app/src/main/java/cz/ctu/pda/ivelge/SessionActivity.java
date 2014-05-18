@@ -6,8 +6,6 @@ import android.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,7 +65,7 @@ public class SessionActivity extends ActionBarActivity implements
 
         actionBar.addTab(actionBar.newTab().setText("MAP")
                 .setTabListener(this));
-        fragmentList.add(new MapFragment());
+        fragmentList.add(new LogMapFragment());
 
         this.mAdapter.setTabFragment(fragmentList);
 
