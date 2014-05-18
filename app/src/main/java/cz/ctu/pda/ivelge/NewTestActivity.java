@@ -1,6 +1,7 @@
 package cz.ctu.pda.ivelge;
 
 import android.app.ActionBar;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -17,35 +18,36 @@ import java.util.List;
 public class NewTestActivity extends ActionBarActivity {
     LinearLayout linearPart;
     LinearLayout linearTask;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_test);
-        linearPart=(LinearLayout)findViewById(R.id.new_test_participants_layout);
-        linearTask=(LinearLayout)findViewById(R.id.new_test_tasks_layout);
-        if(savedInstanceState!=null){
+        linearPart = (LinearLayout) findViewById(R.id.new_test_participants_layout);
+        linearTask = (LinearLayout) findViewById(R.id.new_test_tasks_layout);
+        if (savedInstanceState != null) {
             EditText e;
-            int pcount=linearPart.getChildCount();
-            int bpcount=savedInstanceState.getInt("participnatsCount");
-            int tcount=linearTask.getChildCount();
-            int btcount=savedInstanceState.getInt("tasksCount");
-            for(int i=0;i<bpcount;i++){
-                if(bpcount==pcount){
-                    e=(EditText)linearPart.getChildAt(i);
-                }else {
+            int pcount = linearPart.getChildCount();
+            int bpcount = savedInstanceState.getInt("participantsCount");
+            int tcount = linearTask.getChildCount();
+            int btcount = savedInstanceState.getInt("tasksCount");
+            for (int i = 0; i < bpcount; i++) {
+                if (bpcount == pcount) {
+                    e = (EditText) linearPart.getChildAt(i);
+                } else {
                     e = new EditText(this);
                 }
-                e.setText(savedInstanceState.getString("p"+i));
+                e.setText(savedInstanceState.getString("p" + i));
                 e.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                 linearPart.addView(e);
             }
-            for(int i=0;i<btcount;i++){
-                if(btcount==tcount){
-                    e=(EditText)linearPart.getChildAt(i);
-                }else{
-                    e=new EditText(this);
+            for (int i = 0; i < btcount; i++) {
+                if (btcount == tcount) {
+                    e = (EditText) linearPart.getChildAt(i);
+                } else {
+                    e = new EditText(this);
                 }
-                e.setText(savedInstanceState.getString("t"+i));
+                e.setText(savedInstanceState.getString("t" + i));
                 e.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                 linearTask.addView(e);
             }
@@ -72,64 +74,66 @@ public class NewTestActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }*/
     @Override
-    protected void onSaveInstanceState (Bundle outState){
+    protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        LinearLayout participantLayout=(LinearLayout)findViewById(R.id.new_test_participants_layout);
-        int participantsCount=participantLayout.getChildCount();
-        LinearLayout taskLayout=(LinearLayout)findViewById(R.id.new_test_tasks_layout);
-        int tasksCount=taskLayout.getChildCount();
-        outState.putInt("participantsCount",participantsCount);
-        outState.putInt("tasksCount",tasksCount);
-        for(int i=0;i<participantsCount;i++){
-            outState.putString("p"+i,participantLayout.getChildAt(i).toString());
+        LinearLayout participantLayout = (LinearLayout) findViewById(R.id.new_test_participants_layout);
+        int participantsCount = participantLayout.getChildCount();
+        LinearLayout taskLayout = (LinearLayout) findViewById(R.id.new_test_tasks_layout);
+        int tasksCount = taskLayout.getChildCount();
+        outState.putInt("participantsCount", participantsCount);
+        outState.putInt("tasksCount", tasksCount);
+        for (int i = 0; i < participantsCount; i++) {
+            outState.putString("p" + i, participantLayout.getChildAt(i).toString());
         }
-        for(int i=0;i<tasksCount;i++){
-            outState.putString("t"+i,taskLayout.getChildAt(i).toString());
+        for (int i = 0; i < tasksCount; i++) {
+            outState.putString("t" + i, taskLayout.getChildAt(i).toString());
         }
     }
 
 
-    public void addParticipant(View view){
-        EditText text=new EditText(this);
+    public void addParticipant(View view) {
+        EditText text = new EditText(this);
         //???text .setId(i);
-        text .setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        linearPart=(LinearLayout)findViewById(R.id.new_test_participants_layout);
-        text.setText("participnat"+linearPart.getChildCount()+1);
-        linearPart.addView(text );
+        text.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        linearPart = (LinearLayout) findViewById(R.id.new_test_participants_layout);
+        text.setText("Participant " + (linearPart.getChildCount() + 1));
+        linearPart.addView(text);
     }
-    public void addTask(View view){
-        EditText text=new EditText(this);
-        //???text .setId(i);
-        text .setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        linearTask=(LinearLayout)findViewById(R.id.new_test_tasks_layout);
-        text.setText("task"+linearTask.getChildCount()+1);
-        linearTask.addView(text );
-    }
-    public void saveNewTest(View view){
-        long timestamp = System.currentTimeMillis()/1000;
-        Test newTest=new Test(timestamp);
-        EditText text;
-        Session session;
 
-        List<Session> sessions=new ArrayList<Session>();
-        text=(EditText)findViewById(R.id.new_test_name);
+    public void addTask(View view) {
+        EditText text = new EditText(this);
+        //???text .setId(i);
+        text.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        linearTask = (LinearLayout) findViewById(R.id.new_test_tasks_layout);
+        text.setText("Task " + (linearTask.getChildCount() + 1));
+        linearTask.addView(text);
+    }
+
+    public void saveNewTest(View view) {
+        long timestamp = System.currentTimeMillis() / 1000;
+        Test newTest = new Test(timestamp);
+
+        List<Session> sessions = new ArrayList<Session>();
+
+        EditText text = (EditText) findViewById(R.id.new_test_name);
         newTest.setName(text.getText().toString());
-        LinearLayout lin;
-        lin=(LinearLayout)findViewById(R.id.new_test_participants_layout);
 
-        for(int i=0;i<lin.getChildCount();i++){
-            text=(EditText)lin.getChildAt(i);//participant name
-            session=new Session(text.toString());//new session with participant name
+        LinearLayout lin;
+        lin = (LinearLayout) findViewById(R.id.new_test_participants_layout);
+
+        for (int i = 0; i < lin.getChildCount(); i++) {
+            text = (EditText) lin.getChildAt(i);//participant name
+            Session session = new Session(text.getText().toString());//new session with participant name
             sessions.add(session);
         }
 
         newTest.setSessions(sessions);
-        lin=(LinearLayout)findViewById(R.id.new_test_tasks_layout);
+        lin = (LinearLayout) findViewById(R.id.new_test_tasks_layout);
 
-        List<String> tasks=new ArrayList<String>();
+        List<String> tasks = new ArrayList<String>();
 
-        for(int i=0;i<lin.getChildCount();i++){
-            text=(EditText)lin.getChildAt(i);
+        for (int i = 0; i < lin.getChildCount(); i++) {
+            text = (EditText) lin.getChildAt(i);
             tasks.add(text.toString());
         }
 
@@ -137,7 +141,9 @@ public class NewTestActivity extends ActionBarActivity {
 
         TestDataSource dataSource = new TestDataSource(this);
         dataSource.open();
-        dataSource.commitTest(newTest);
+        dataSource.insertTest(newTest);
         dataSource.close();
+
+        NavUtils.navigateUpFromSameTask(this);
     }
 }
