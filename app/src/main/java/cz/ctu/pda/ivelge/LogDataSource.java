@@ -22,10 +22,14 @@ public class LogDataSource {
             DatabaseSQLiteHelper.LOG_ID,
             DatabaseSQLiteHelper.LOG_TIMESTAMP,
             DatabaseSQLiteHelper.LOG_PRIORITY,
-            DatabaseSQLiteHelper.LOG_LOCATION,
+            DatabaseSQLiteHelper.LOG_LATITUDE,
+            DatabaseSQLiteHelper.LOG_LONGITUDE,
             DatabaseSQLiteHelper.LOG_DESCRIPTION,
             DatabaseSQLiteHelper.LOG_IMGPATH,
-            DatabaseSQLiteHelper.LOG_SESSIONID};
+            DatabaseSQLiteHelper.LOG_SESSIONID,
+            DatabaseSQLiteHelper.LOG_CATEGORYID,
+            DatabaseSQLiteHelper.LOG_SUBCATEGORYINDEX,
+            DatabaseSQLiteHelper.LOG_TASKINDEX};
     private Context context;
 
     public LogDataSource(Context context) {
@@ -78,15 +82,19 @@ public class LogDataSource {
         long id = cursor.getLong(0);
         long timestamp = cursor.getLong(1);
         int priority = cursor.getInt(2);
-        String location = cursor.getString(3);
-        String description = cursor.getString(4);
-        String imgPath = cursor.getString(5);
-        int sessionId = cursor.getInt(6);
+        double latitude = cursor.getDouble(3);
+        double longitude = cursor.getDouble(4);
+        String description = cursor.getString(5);
+        String imgPath = cursor.getString(6);
+        int sessionId = cursor.getInt(7);
+        long categoryId = cursor.getLong(8);
+        int subcategoryIndex = cursor.getInt(9);
+        int taskIndex = cursor.getInt(10);
 
         //File img = new File(context.getFilesDir() + "/img" + imgPath);
         File img = new File(imgPath);
 
-        Log log = new Log(id, timestamp, priority, location, description, img, sessionId);
+        Log log = new Log(id, timestamp, priority, latitude, longitude, description, img, sessionId, categoryId, subcategoryIndex, taskIndex);
         return log;
     }
 
@@ -102,10 +110,14 @@ public class LogDataSource {
         }
         values.put(DatabaseSQLiteHelper.LOG_TIMESTAMP, log.getTimestamp());
         values.put(DatabaseSQLiteHelper.LOG_PRIORITY, log.getPriority());
-        values.put(DatabaseSQLiteHelper.LOG_LOCATION, log.getLocation());
+        values.put(DatabaseSQLiteHelper.LOG_LATITUDE, log.getLatitude());
+        values.put(DatabaseSQLiteHelper.LOG_LONGITUDE, log.getLongitude());
         values.put(DatabaseSQLiteHelper.LOG_DESCRIPTION, log.getDescription());
         values.put(DatabaseSQLiteHelper.LOG_IMGPATH, log.getPhoto().getAbsolutePath());
         values.put(DatabaseSQLiteHelper.LOG_SESSIONID, log.getSessionId());
+        values.put(DatabaseSQLiteHelper.LOG_CATEGORYID, log.getCategoryId());
+        values.put(DatabaseSQLiteHelper.LOG_SUBCATEGORYINDEX, log.getSubcategoryIndex());
+        values.put(DatabaseSQLiteHelper.LOG_TASKINDEX, log.getTaskIndex());
 
         long id = database.insertWithOnConflict(DatabaseSQLiteHelper.TABLE_LOG, null, values, database.CONFLICT_REPLACE);
 

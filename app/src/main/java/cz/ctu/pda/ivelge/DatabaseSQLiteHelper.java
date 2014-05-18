@@ -33,10 +33,14 @@ public class DatabaseSQLiteHelper extends SQLiteOpenHelper {
     public static final String LOG_ID = "_id";
     public static final String LOG_TIMESTAMP = "timestamp";
     public static final String LOG_PRIORITY = "priority";
-    public static final String LOG_LOCATION = "location";
+    public static final String LOG_LATITUDE = "latitude";
+    public static final String LOG_LONGITUDE = "longitude";
     public static final String LOG_DESCRIPTION = "description";
     public static final String LOG_IMGPATH = "imgpath";
     public static final String LOG_SESSIONID = "sessionId";
+    public static final String LOG_CATEGORYID = "categoryId";
+    public static final String LOG_SUBCATEGORYINDEX = "subcategoryIndex";
+    public static final String LOG_TASKINDEX = "taskIndex";
 
     public static final String TABLE_CATEGORY = "Category";
     public static final String CATEGORY_ID = "_id";
@@ -73,10 +77,14 @@ public class DatabaseSQLiteHelper extends SQLiteOpenHelper {
             + LOG_ID + " integer primary key autoincrement, "
             + LOG_TIMESTAMP + " integer not null, "
             + LOG_PRIORITY + " integer, "
-            + LOG_LOCATION + " text, " //TODO get correct regarding the gMaps API
+            + LOG_LATITUDE + " real, "
+            + LOG_LONGITUDE + " real, "
             + LOG_DESCRIPTION + " text, "
             + LOG_IMGPATH + " text, "
             + LOG_SESSIONID + " integer not null, "
+            + LOG_CATEGORYID + " integer not null, "
+            + LOG_SUBCATEGORYINDEX + " integer, "
+            + LOG_TASKINDEX + " integer not null, "
             + "FOREIGN KEY("+ LOG_SESSIONID + ") REFERENCES "+ TABLE_SESSION +"("+SESSION_ID+")" + ");";
 
     private static final String CATEGORY_CREATE = "create table "

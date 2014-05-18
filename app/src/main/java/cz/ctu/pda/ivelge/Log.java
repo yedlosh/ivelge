@@ -10,15 +10,14 @@ public class Log {
     private long id;
     private long timestamp;
     private int priority;
-    private String location; //TODO change regarding the gMaps API
+    private double latitude;
+    private double longitude;  //TODO change regarding the gMaps API
     private String description;
     private File photo;
     private long sessionId;
     private long categoryId;
     private int subcategoryIndex;
     private int taskIndex;
-    private double latitude;
-    private double longitude; 
 
     public Log(long timestamp, long sessionId) {
         id = -1;
@@ -26,19 +25,18 @@ public class Log {
         this.sessionId = sessionId;
     }
 
-    public Log(long id, long timestamp, int priority, String location, String description, File photo, long sessionId, long categoryId, int subcategoryIndex, int taskIndex,double latitude ,double longitude) {
+    public Log(long id, long timestamp, int priority, double latitude ,double longitude, String description, File photo, long sessionId, long categoryId, int subcategoryIndex, int taskIndex) {
         this.id = id;
         this.timestamp = timestamp;
         this.priority = priority;
-        this.location = location;
+        this.latitude = latitude;
+        this.longitude = longitude;
         this.description = description;
         this.photo = photo;
         this.sessionId = sessionId;
         this.categoryId = categoryId;
         this.subcategoryIndex = subcategoryIndex;
         this.taskIndex = taskIndex;
-        this.latitude=latitude;
-        this.longitude=longitude;
     }
 
     public long getId() {
@@ -63,14 +61,6 @@ public class Log {
 
     public void setPriority(int priority) {
         this.priority = priority;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
     }
 
     public String getDescription() {
