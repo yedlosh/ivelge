@@ -11,6 +11,11 @@
         android:id="@+id/final_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+<<<<<<< HEAD
+=======
+        android:layout_below="@id/map_text"
+        android:textAppearance="?android:textAppearanceMedium"
+>>>>>>> origin/master
         android:text="@string/final_time"
         />
     <TextView
@@ -18,6 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/final_time"
+        android:textAppearance="?android:textAppearanceMedium"
         android:text="00:26:21"
         />
 

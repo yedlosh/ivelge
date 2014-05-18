@@ -18,10 +18,16 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class LogFragment extends Fragment {
+    private CategoryDataSource categoryDataSource;
+    private LogDataSource logDataSource;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        logDataSource.open();
+        Log log=logDataSource.getSessionLogs()
+        categoryDataSource.open();
+        Category category=categoryDataSource.getCategory()
 
     }
 

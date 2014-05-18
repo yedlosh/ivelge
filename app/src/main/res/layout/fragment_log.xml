@@ -5,10 +5,16 @@
     android:orientation="vertical"
     android:background="#fa6a6a" >
 
-    <TextView
+    <ListView
+        android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Logy" />
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:divider="@android:color/holo_blue_light"
+        android:dividerHeight="1dp"
+        />
 
 
 </RelativeLayout>
