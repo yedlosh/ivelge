@@ -34,5 +34,6 @@
     <string name="title_activity_event_edit">EventEditActivity</string>
     <string name="title_activity_start_session">Participant</string>
     <string name="end_session">End Session</string>
+    <string name="ip_hint">Enter server IP...</string>
 
 </resources>
