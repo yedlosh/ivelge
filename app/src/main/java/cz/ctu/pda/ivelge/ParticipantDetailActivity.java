@@ -21,6 +21,7 @@ import java.util.Map;
 public class ParticipantDetailActivity extends ActionBarActivity {
     private SessionDataSource dataSource;
     private Session session;
+    private long testId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,7 +29,7 @@ public class ParticipantDetailActivity extends ActionBarActivity {
         Bundle b=getIntent().getExtras();
         this.setTitle(b.getString("name"));
         dataSource.open();
-        long testId=b.getLong("testId");
+        testId=b.getLong("testId");
         int position=b.getInt("position");
         List<Session> sessions=dataSource.getTestSessions(testId);
         session=getdata(sessions,position);
@@ -91,7 +92,13 @@ public class ParticipantDetailActivity extends ActionBarActivity {
         startActivity(intent);
     }
 
-    public void sendMessage(View view) {
-        //TODO
+    public void startSession(View view) {
+        Intent intent=new Intent(this, StartSessionActivity.class);
+        Bundle b=new Bundle();
+        b.putLong("testId",testId);
+        b.putLong("sessionId",session.getId());
+        b.putString("name",session.getParticipantName());
+        intent.putExtras(b);
+        startActivity(intent);
     }
 }
