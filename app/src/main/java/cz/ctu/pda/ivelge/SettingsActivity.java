@@ -1,10 +1,12 @@
 package cz.ctu.pda.ivelge;
 
+import android.content.SharedPreferences;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 
 
 public class SettingsActivity extends ActionBarActivity {
@@ -13,6 +15,12 @@ public class SettingsActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+
+        SharedPreferences sp = getSharedPreferences("ivelge", MODE_PRIVATE);
+
+        String ip = sp.getString("serverIP","Enter server IP...");
+        EditText serverAddress = (EditText) findViewById(R.id.server_address);
+        serverAddress.setText(ip);
     }
 
 
@@ -36,6 +44,9 @@ public class SettingsActivity extends ActionBarActivity {
     }
 
     public void saveSettings(View view){
-        //TODO
+        EditText serverAddress = (EditText) findViewById(R.id.server_address);
+        SharedPreferences sp = getSharedPreferences("ivelge", MODE_PRIVATE);
+        SharedPreferences.Editor ed = sp.edit();
+        ed.putString("serverIP",serverAddress.getText().toString());
     }
 }
