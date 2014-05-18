@@ -24,7 +24,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Priority"
         android:id="@+id/eventPriority"
-        android:layout_above="@+id/eventCategoriy"
+        android:layout_above="@+id/eventCategory"
         android:layout_centerHorizontal="true" />
 
     <TextView
@@ -52,7 +52,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="SubCategory"
         android:id="@+id/eventSubCategory"
-        android:layout_below="@+id/eventCategoriy"
+        android:layout_below="@+id/eventCategory"
         android:layout_toRightOf="@+id/eventTime" />
 
     <TextView
