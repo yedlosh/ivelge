@@ -103,7 +103,7 @@ public class SessionDataSource {
         if (cursor.getCount() == 0) {
             return null;
         }
-        
+
         cursor.moveToFirst();
 
         LogDataSource logDAO = new LogDataSource(context);

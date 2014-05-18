@@ -119,14 +119,19 @@ public class TestDataSource {
             uploadedBool = true;
         }
 
-        List<String> taskList = new ArrayList<String>(Arrays.asList(tasks.split(",")));
+        List<String> taskList = null;
+        if(!tasks.isEmpty())
+        taskList = new ArrayList<String>(Arrays.asList(tasks.split(",")));
 
-        String[] categoryTokens = categories.split(",");
-        List<Category> categoryList = new ArrayList<Category>();
+        List<Category> categoryList = null;
+        if(!categories.isEmpty()) {
+            String[] categoryTokens = categories.split(",");
+            categoryList = new ArrayList<Category>();
 
-        for (String catIdString : categoryTokens) {
-            Category category = categoryDAO.getCategory(Long.getLong(catIdString));
-            categoryList.add(category);
+            for (String catIdString : categoryTokens) {
+                Category category = categoryDAO.getCategory(Long.getLong(catIdString));
+                categoryList.add(category);
+            }
         }
 
         List<Session> sessions = sessionDAO.getTestSessions(id);
