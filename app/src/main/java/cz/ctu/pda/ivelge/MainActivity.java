@@ -61,7 +61,8 @@ public class MainActivity extends ListActivity {
             startActivity(intent);
             return true;
         }else if(id==R.id.action_new_test){
-
+            Intent intent=new Intent(this,NewTestActivity.class);
+            startActivity(intent);
 
             return true;
         }

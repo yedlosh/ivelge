@@ -1,9 +1,13 @@
 package cz.ctu.pda.ivelge;
 
+import android.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 
 
 public class NewTestActivity extends ActionBarActivity {
@@ -15,7 +19,7 @@ public class NewTestActivity extends ActionBarActivity {
     }
 
 
-    @Override
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.new_test, menu);
@@ -32,6 +36,22 @@ public class NewTestActivity extends ActionBarActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }*/
+    public void addParticipant(View view){
+        EditText text=new EditText(this);
+        //???text .setId(i);
+        text .setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        LinearLayout linear=(LinearLayout)findViewById(R.id.new_test_participants_layout);
+        linear.addView(text );
     }
-
+    public void addTask(View view){
+        EditText text=new EditText(this);
+        //???text .setId(i);
+        text .setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        LinearLayout linear=(LinearLayout)findViewById(R.id.new_test_tasks_layout);
+        linear.addView(text );
+    }
+    public void saveNewTest(View view){
+        //todo
+    }
 }
