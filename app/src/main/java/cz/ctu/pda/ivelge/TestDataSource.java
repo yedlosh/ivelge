@@ -50,7 +50,7 @@ public class TestDataSource {
                 allColumns, null, null, null, null, null);
 
         if (cursor.getCount() == 0) {
-            return null;
+            return tests;
         }
 
         cursor.moveToFirst();

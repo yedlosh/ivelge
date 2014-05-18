@@ -49,7 +49,7 @@ public class DatabaseSQLiteHelper extends SQLiteOpenHelper {
 
 
     private static final String DATABASE_NAME = "ivelge.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     // Table creation sql statements
     private static final String TEST_CREATE = "create table "
@@ -100,9 +100,13 @@ public class DatabaseSQLiteHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase database) {
         Log.w(DatabaseSQLiteHelper.class.getName(),"BUILDING DATABASE");
+        Log.i(DatabaseSQLiteHelper.class.getName(),"Executing: \r\n" + TEST_CREATE);
         database.execSQL(TEST_CREATE);
+        Log.i(DatabaseSQLiteHelper.class.getName(),"Executing: \r\n" + SESSION_CREATE);
         database.execSQL(SESSION_CREATE);
+        Log.i(DatabaseSQLiteHelper.class.getName(),"Executing: \r\n" + LOG_CREATE);
         database.execSQL(LOG_CREATE);
+        Log.i(DatabaseSQLiteHelper.class.getName(),"Executing: \r\n" + CATEGORY_CREATE);
         database.execSQL(CATEGORY_CREATE);
 
         //database.execSQL(insertArticleRow("Nadpis 1", "Obsah clanku 1 z kategorie vyhradne novinek", 1527776581, 0, 1386439128));
