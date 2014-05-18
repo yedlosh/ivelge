@@ -1,5 +1,6 @@
 package cz.ctu.pda.ivelge;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -9,20 +10,30 @@ public class Test implements Comparable<Test> {
 
     private long id;
     private String name;
-    private List<String> participants;
     private List<String> tasks;
     private List<Category> categories;
     private long timestamp;
     private boolean uploaded;
+    private List<Session> sessions;
 
-    public Test(long id, String name, List<String> participants, List<String> tasks, List<Category> categories,long timestamp,boolean uploaded) {
+    //For new instances
+    public Test(long timestamp) {
+        id = -1;
+        this.timestamp = timestamp;
+        tasks = new ArrayList<String>();
+        categories = new ArrayList<Category>();
+        sessions = new ArrayList<Session>();
+    }
+
+    //For DB import
+    public Test(long id, String name, List<String> tasks, List<Category> categories, long timestamp,boolean uploaded, List<Session> sessions) {
         this.id = id;
         this.name = name;
-        this.participants = participants;
         this.tasks = tasks;
         this.categories = categories;
         this.timestamp=timestamp;
         this.uploaded=uploaded;
+        this.sessions=sessions;
     }
 
     public long getId() {
@@ -39,14 +50,6 @@ public class Test implements Comparable<Test> {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public List<String> getParticipants() {
-        return participants;
-    }
-
-    public void setParticipants(List<String> participants) {
-        this.participants = participants;
     }
 
     public List<String> getTasks() {
@@ -79,6 +82,14 @@ public class Test implements Comparable<Test> {
 
     public void setUploaded(boolean uploaded){
         this.uploaded=uploaded;
+    }
+
+    public List<Session> getSessions() {
+        return sessions;
+    }
+
+    public void setSessions(List<Session> sessions) {
+        this.sessions = sessions;
     }
 
     @Override

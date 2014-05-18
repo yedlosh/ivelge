@@ -12,8 +12,8 @@ public class Category {
     private String name;
     private List<String> subcategories;
 
-    public Category(long id, String name) {
-        this.id = id;
+    public Category(String name) {
+        id = -1;
         this.name = name;
         subcategories = new ArrayList<String>();
     }

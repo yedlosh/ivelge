@@ -15,9 +15,10 @@ public class Log {
     private File photo;
     private long sessionId;
 
-    public Log(long id, long timestamp) {
-        this.id = id;
+    public Log(long timestamp, long sessionId) {
+        id = -1;
         this.timestamp = timestamp;
+        this.sessionId = sessionId;
     }
 
     public Log(long id, long timestamp, int priority, String location, String description, File photo, long sessionId) {

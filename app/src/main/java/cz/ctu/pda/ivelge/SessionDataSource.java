@@ -1,5 +1,6 @@
 package cz.ctu.pda.ivelge;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -21,7 +22,9 @@ public class SessionDataSource {
             DatabaseSQLiteHelper.SESSION_STARTTIME,
             DatabaseSQLiteHelper.SESSION_ENDTIME,
             DatabaseSQLiteHelper.SESSION_PRETEST,
-            DatabaseSQLiteHelper.SESSION_POSTTEST};
+            DatabaseSQLiteHelper.SESSION_POSTTEST,
+            DatabaseSQLiteHelper.SESSION_TESTID,
+            DatabaseSQLiteHelper.SESSION_PARTICIPANTNAME};
     private Context context;
 
     public SessionDataSource(Context context) {
@@ -35,6 +38,31 @@ public class SessionDataSource {
 
     public void close() {
         dbHelper.close();
+    }
+
+    public Session getSession(long id) {
+
+        Cursor cursor = database.query(DatabaseSQLiteHelper.TABLE_SESSION,
+                allColumns, DatabaseSQLiteHelper.SESSION_ID + " = " + id, null, null, null, null);
+
+        if (cursor.getCount() == 0) {
+            return null;
+        }
+
+        cursor.moveToFirst();
+
+        LogDataSource logDAO = new LogDataSource(context);
+        logDAO.open();
+
+        Session session = cursorToSession(cursor, logDAO);
+
+        // make sure to close the cursor
+        cursor.close();
+        logDAO.close();
+
+        //Collections.sort(tests);
+
+        return session;
     }
 
     public List<Session> getAllSessions() {
@@ -92,10 +120,40 @@ public class SessionDataSource {
         long endTime = cursor.getLong(2);
         String preTest = cursor.getString(3);
         String postTest = cursor.getString(4);
+        long testId = cursor.getLong(5);
+        String participantName = cursor.getString(6);
 
         List<Log> logs = logDAO.getSessionLogs(id);
 
-        Session session = new Session(id, startTime, endTime,preTest,postTest,logs);
+        Session session = new Session(id, startTime, endTime, preTest, postTest, logs, testId, participantName);
         return session;
     }
+
+    public boolean commitSession(Session session){
+        if (session.getTestId() == -1) {
+            return false;
+        }
+        ContentValues values = new ContentValues();
+
+        if (session.getId() != -1) {
+            values.put(DatabaseSQLiteHelper.SESSION_ID, session.getId());
+        }
+        values.put(DatabaseSQLiteHelper.SESSION_STARTTIME, session.getStartTime());
+        values.put(DatabaseSQLiteHelper.SESSION_ENDTIME, session.getEndTime());
+        values.put(DatabaseSQLiteHelper.SESSION_PRETEST, session.getPreTest());
+        values.put(DatabaseSQLiteHelper.SESSION_POSTTEST, session.getPostTest());
+        values.put(DatabaseSQLiteHelper.SESSION_TESTID, session.getTestId());
+        values.put(DatabaseSQLiteHelper.SESSION_PARTICIPANTNAME, session.getParticipantName());
+
+        long id = database.insertWithOnConflict(DatabaseSQLiteHelper.TABLE_SESSION, null, values, database.CONFLICT_REPLACE);
+
+        if (id != -1) {
+            if (session.getId() != id) {
+                session.setId(id);
+            }
+            return true;
+        }
+        return false;
+    }
+
 }

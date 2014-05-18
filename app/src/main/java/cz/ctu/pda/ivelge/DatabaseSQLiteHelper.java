@@ -15,9 +15,10 @@ public class DatabaseSQLiteHelper extends SQLiteOpenHelper {
     public static final String TABLE_TEST = "Test";
     public static final String TEST_ID = "_id";
     public static final String TEST_NAME = "name";
-    public static final String TEST_PARTICIPANTS = "participants";
     public static final String TEST_TASKS = "tasks";
     public static final String TEST_CATEGORIES = "categories";
+    public static final String TEST_TIMESTAMP = "timestamp";
+    public static final String TEST_UPLOADED = "uploaded";
 
     public static final String TABLE_SESSION = "Session";
     public static final String SESSION_ID = "_id";
@@ -26,6 +27,7 @@ public class DatabaseSQLiteHelper extends SQLiteOpenHelper {
     public static final String SESSION_PRETEST = "preTest";
     public static final String SESSION_POSTTEST = "postTest";
     public static final String SESSION_TESTID = "testId";
+    public static final String SESSION_PARTICIPANTNAME = "participantName";
 
     public static final String TABLE_LOG = "Log";
     public static final String LOG_ID = "_id";
@@ -50,9 +52,10 @@ public class DatabaseSQLiteHelper extends SQLiteOpenHelper {
             + TABLE_TEST + "("
             + TEST_ID + " integer primary key autoincrement, "
             + TEST_NAME + " text not null, "
-            + TEST_PARTICIPANTS + " text not null, "
             + TEST_TASKS + " integer not null"
-            + TEST_CATEGORIES + "text" + ");";
+            + TEST_CATEGORIES + "text"
+            + TEST_TIMESTAMP + " integer not null, "
+            + TEST_UPLOADED + " integer" + ");";
 
     private static final String SESSION_CREATE = "create table "
             + TABLE_SESSION + "("
@@ -62,6 +65,7 @@ public class DatabaseSQLiteHelper extends SQLiteOpenHelper {
             + SESSION_PRETEST + " text, "
             + SESSION_POSTTEST + " text"
             + SESSION_TESTID + " integer"
+            + SESSION_PARTICIPANTNAME + " text not null"
             + "FOREIGN KEY("+ SESSION_TESTID + ") REFERENCES "+ TABLE_TEST +"("+TEST_ID+")" + ");";
 
     private static final String LOG_CREATE = "create table "
@@ -87,6 +91,7 @@ public class DatabaseSQLiteHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase database) {
+        Log.w(DatabaseSQLiteHelper.class.getName(),"BUILDING DATABASE");
         database.execSQL(TEST_CREATE);
         database.execSQL(SESSION_CREATE);
         database.execSQL(LOG_CREATE);

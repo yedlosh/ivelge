@@ -1,5 +1,6 @@
 package cz.ctu.pda.ivelge;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -23,10 +24,6 @@ public class CategoryDataSource {
 
     public CategoryDataSource(Context context) {
         dbHelper = new DatabaseSQLiteHelper(context);
-    }
-
-    public CategoryDataSource(SQLiteDatabase database){
-
     }
 
     public void open() throws SQLException {
@@ -54,10 +51,14 @@ public class CategoryDataSource {
         return categories;
     }
 
-    public Category getCategory(Long id){
+    public Category getCategory(Long id) {
 
         Cursor cursor = database.query(DatabaseSQLiteHelper.TABLE_CATEGORY,
                 allColumns, DatabaseSQLiteHelper.CATEGORY_ID + " = " + id, null, null, null, null);
+
+        if(cursor.getCount() == 0){
+            return null;
+        }
 
         cursor.moveToFirst();
 
@@ -78,5 +79,25 @@ public class CategoryDataSource {
 
         Category category = new Category(id, name, subcategoriesList);
         return category;
+    }
+
+    public boolean commitCategory(Category category) {
+
+        ContentValues values = new ContentValues();
+        if (category.getId() != -1) {
+            values.put(DatabaseSQLiteHelper.CATEGORY_ID, category.getId());
+        }
+        values.put(DatabaseSQLiteHelper.CATEGORY_NAME, category.getName());
+        values.put(DatabaseSQLiteHelper.CATEGORY_SUBCATEGORIES, DatabaseSQLiteHelper.listToCsv(category.getSubcategories(), ','));
+
+        long id = database.insertWithOnConflict(DatabaseSQLiteHelper.TABLE_CATEGORY, null, values, database.CONFLICT_REPLACE);
+
+        if (id != -1) {
+            if (category.getId() != id) {
+                category.setId(id);
+            }
+            return true;
+        }
+        return false;
     }
 }
