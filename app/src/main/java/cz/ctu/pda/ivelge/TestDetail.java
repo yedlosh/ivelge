@@ -18,7 +18,8 @@ import java.util.Map;
 
 
 public class TestDetail extends ListActivity {
-    private SessionDataSource dataSource;
+    SessionDataSource dataSource;
+    public long id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,13 +28,20 @@ public class TestDetail extends ListActivity {
         Bundle b = getIntent().getExtras();
         this.setTitle(b.getString("name"));
         dataSource.open();
-        String id=b.getString("id");
-        List<Session> sessions=dataSource.getTestSessions(Long.parseLong(id));
+        String ids=b.getString("id");
+        id=Long.parseLong(ids);
+        List<Session> sessions=dataSource.getTestSessions(id);
         List<Map<String, String>> list=getdata(sessions);
         String[] from = {"participant", "finished","duration","logs"};
         int[] to={R.id.participant_name,R.id.finished_text,R.id.duration_text,R.id.logs_text};
         SimpleAdapter adapter = new SimpleAdapter(this,list,R.layout.test_detail_list_item,from,to);
         setListAdapter(adapter);
+    }
+
+    @Override
+    protected void onDestroy() {
+        dataSource.close();
+        super.onDestroy();
     }
 
 
@@ -59,13 +67,11 @@ public class TestDetail extends ListActivity {
     protected void onListItemClick(ListView l, View v, int position, long id) {
         Map articleItemMap = (Map) getListAdapter().getItem(position);
         String name=(String)articleItemMap.get("participant");
-        String pretest=(String)articleItemMap.get("pretest");
-        String posttest=(String)articleItemMap.get("posttest");
         Intent intent=new Intent(this,ParticipantDetailActivity.class);
         Bundle b=new Bundle();
         b.putString("name",name);
-        b.putString("preteste",pretest);
-        b.putString("posttest",posttest);
+        b.putLong("testId",id);
+        b.putInt("position",position);
         intent.putExtras(b);
         startActivity(intent);
     }
@@ -84,8 +90,6 @@ public class TestDetail extends ListActivity {
             dateFormat = new SimpleDateFormat("H:mm");
             long duration=session.getEndTime()-session.getStartTime();
             map.put("duration",dateFormat.format(new Date(duration * 1000)));
-            map.put("pretest",session.getPreTest());
-            map.put("posttest",session.getPostTest());
             list.add(map);
         }
         return list;

@@ -36,6 +36,12 @@ public class MainActivity extends ListActivity {
         setListAdapter(adapter);
     }
 
+    @Override
+    protected void onDestroy() {
+        dataSource.close();
+        super.onDestroy();
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

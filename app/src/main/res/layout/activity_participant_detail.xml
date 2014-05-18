@@ -20,6 +20,7 @@
         android:layout_height="wrap_content"
         />
     <TextView
+        android:id="@+id/posttest_label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/posttest"
@@ -31,14 +32,18 @@
         android:layout_height="wrap_content"
         android:visibility="gone"/>
     <Button
+        android:id="@+id/view_log_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/view_log"
         android:layout_gravity="center_horizontal"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        android:onClick="viewLog"/>
     <Button
+        android:id="@+id/start_session_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/start_session"
-        android:layout_gravity="center_horizontal"/>
+        android:layout_gravity="center_horizontal"
+        android:onClick="startSession"/>
 </LinearLayout>

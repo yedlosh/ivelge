@@ -125,9 +125,13 @@ public class TestDataSource {
             categoryList.add(category);
         }
 
+<<<<<<< HEAD
         List<Session> sessions = sessionDAO.getTestSessions(id);
 
         Test test = new Test(id, name, taskList, categoryList, timestamp, uploadedBool, sessions);
+=======
+        Test test =new Test(id, name, participantList,taskList,categoryList);
+>>>>>>> 8342b5679f88704c70f222bc291173da447706a8
         return test;
     }
 

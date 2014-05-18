@@ -9,7 +9,7 @@ import java.util.List;
 public class Session {
 
     private long id;
-    private long startTime;
+    private long startTime=-1;
     private long endTime;
     private String preTest;
     private String postTest;
