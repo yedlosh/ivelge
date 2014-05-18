@@ -67,7 +67,7 @@ public class LogDataSource {
                 allColumns, DatabaseSQLiteHelper.LOG_SESSIONID + " = " + sessionId, null, null, null, null);
 
         if (cursor.getCount() == 0) {
-            return null;
+            return logs;
         }
 
         cursor.moveToFirst();
