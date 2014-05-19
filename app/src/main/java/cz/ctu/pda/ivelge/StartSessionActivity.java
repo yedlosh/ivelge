@@ -46,6 +46,7 @@ public class StartSessionActivity extends ActionBarActivity implements
         spinner.setOnItemSelectedListener(this);
         spAdapter=new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,test.getTasks());
         spAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(spAdapter);
 
         viewPager = (ViewPager) findViewById(R.id.pager);
         actionBar = getActionBar();
@@ -138,6 +139,7 @@ public class StartSessionActivity extends ActionBarActivity implements
         Intent intent=new Intent(this,NewEventActivity.class);
         Bundle b=new Bundle();
         b.putInt("selectedTaskIndex",selectedTaskIndex);
+        b.putLong("testId",testId);
         intent.putExtras(b);
         startActivity(intent);
     }

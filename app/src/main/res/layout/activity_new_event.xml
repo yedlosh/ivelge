@@ -83,13 +83,15 @@
             android:id="@+id/new_event_discard_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/new_event_discard"/>
+            android:text="@string/new_event_discard"
+            android:onClick="discardEvent"/>
         <Button
             android:id="@+id/new_event_save_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="25dp"
-            android:text="@string/save_btn"/>
+            android:text="@string/save_btn"
+            android:onClick="saveEvent"/>
         </LinearLayout>
 
 
