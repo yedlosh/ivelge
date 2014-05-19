@@ -124,7 +124,7 @@ public class LogFragment extends ListFragment {
             SimpleDateFormat dateFormat = new SimpleDateFormat("H:mm");
             map.put("id", Long.toString(log.getId()));
             map.put("timestamp", "Time: " + dateFormat.format(new Date(log.getTimestamp() * 1000)));
-            map.put("Priority ", Integer.toString(log.getPriority()));
+            map.put("priority","Priority " + Integer.toString(log.getPriority()));
             map.put("task", "Task " + log.getTaskIndex()); //todo
             Category category = categoryDataSource.getCategory(log.getCategoryId());
             map.put("category", category.getName());

@@ -35,7 +35,8 @@
         <activity
             android:name="cz.ctu.pda.ivelge.TestDetail"
             android:label="@string/title_activity_test_detail"
-            android:parentActivityName="cz.ctu.pda.ivelge.MainActivity" >
+            android:parentActivityName="cz.ctu.pda.ivelge.MainActivity"
+            android:launchMode="singleTop">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="MainActivity" />
@@ -88,10 +89,6 @@
         <activity
             android:name="cz.ctu.pda.ivelge.EventEditActivity"
             android:label="@string/title_activity_event_edit" >
-        </activity>
-        <activity
-            android:name="cz.ctu.pda.ivelge.StartSessionActivity"
-            android:label="@string/title_activity_start_session" >
         </activity>
     </application>
 

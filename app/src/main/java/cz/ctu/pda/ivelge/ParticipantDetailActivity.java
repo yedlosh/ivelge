@@ -89,6 +89,7 @@ public class ParticipantDetailActivity extends ActionBarActivity {
         }
         if(starting){
             session.setStartTime(System.currentTimeMillis() / 1000);
+            starting = false;
         }
 
         dataSource.commitSession(session);

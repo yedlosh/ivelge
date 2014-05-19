@@ -1,5 +1,6 @@
 package cz.ctu.pda.ivelge;
 
+import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,11 +19,12 @@ import java.util.List;
 import java.util.Map;
 
 
-public class TestDetail extends ListActivity {
+public class TestDetail extends Activity implements TestDetailFragment.OnFragmentInteractionListener {
     SessionDataSource dataSource;
     public long id;
     List<Session> sessions;
     private String name;
+    TestDetailFragment testDetailFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,51 +53,24 @@ public class TestDetail extends ListActivity {
                     name = b.getString("name");
                     this.setTitle(name);
                 }
-                if (b.containsKey("id")) {
-                    String ids = b.getString("id");
+                if (b.containsKey("id_test")) {
+                    String ids = b.getString("id_test");
                     id = Long.parseLong(ids);
                 }
             }
         }
 
-        dataSource.open();
-        sessions = dataSource.getTestSessions(id);
-        List<Map<String, String>> list = getdata(sessions);
+        if (savedInstanceState == null) {
+            Bundle arguments = new Bundle();
+            arguments.putLong("id", id);
+            testDetailFragment = new TestDetailFragment();
 
-        String[] from = {"participant", "finished", "duration", "logs", ""};
-        int[] to = {R.id.participant_name, R.id.finished_text, R.id.duration_text, R.id.logs_text, R.id.notStarted_text};
-        SimpleAdapter adapter = new SimpleAdapter(this, list, R.layout.test_detail_list_item, from, to);
+            testDetailFragment.setArguments(arguments);
 
-        SimpleAdapter.ViewBinder viewBinder = new SimpleAdapter.ViewBinder() {
-            int current = 0;
-            boolean first = true;
-
-            public boolean setViewValue(View view, Object data, String textRepresentation) {
-                //android.util.Log.i(TestDetail.class.getName(),"AdapterView: " + view.getTag());
-                if (view.getTag() != null && view.getTag().toString().equals("participantName")) {
-                    TextView textView = (TextView) view;
-                    textView.setText(textRepresentation);
-                    if (first) {
-                        first = false;
-                    } else {
-                        current++;
-                    }
-                } else if (view.getTag() != null && view.getTag().toString().equals("notStarted") && !sessions.get(current).started()) {
-                    view.setVisibility(View.VISIBLE);
-                } else if (!sessions.get(current).started()) {
-                    TextView textView = (TextView) view;
-                    textView.setVisibility(View.GONE);
-                } else {
-                    TextView textView = (TextView) view;
-                    textView.setText(textRepresentation);
-                }
-                return true;
-            }
-        };
-
-        adapter.setViewBinder(viewBinder);
-        setListAdapter(adapter);
-
+            getFragmentManager().beginTransaction()
+                    .add(R.id.frameContainer, testDetailFragment)
+                    .commit();
+        }
     }
 
     @Override
@@ -107,7 +82,7 @@ public class TestDetail extends ListActivity {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putLong("id", id);
+        outState.putLong("id_test", id);
         outState.putString("name", name);
 
     }
@@ -130,36 +105,15 @@ public class TestDetail extends ListActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
     @Override
-    protected void onListItemClick(ListView l, View v, int position, long id) {
-        Map articleItemMap = (Map) getListAdapter().getItem(position);
-        String name = (String) articleItemMap.get("participant");
+    public void onFragmentInteraction(int position,String name, long sessionId) {
         Intent intent = new Intent(this, ParticipantDetailActivity.class);
         Bundle b = new Bundle();
         b.putString("name", name);
         b.putLong("testId", this.id);
-        b.putLong("sessionId", sessions.get(position).getId());
+        b.putLong("sessionId", sessionId);
         intent.putExtras(b);
-        startActivity(intent);
-    }
 
-    private List<Map<String, String>> getdata(List<Session> sessions) {
-        List<Map<String, String>> list = new ArrayList<Map<String, String>>();
-        Map<String, String> map;
-        Session session;
-        for (int i = 0; i < sessions.size(); i++) {
-            session = sessions.get(i);
-            map = new HashMap<String, String>();
-            map.put("participant", session.getParticipantName());
-            SimpleDateFormat dateFormat = new SimpleDateFormat("H:mm d.M.yyyy");
-            map.put("finished", dateFormat.format(new Date(session.getEndTime() * 1000)));
-            map.put("logs", Integer.toString(session.getNumberOfLogs()));
-            dateFormat = new SimpleDateFormat("H:mm");
-            long duration = session.getEndTime() - session.getStartTime();
-            map.put("duration", dateFormat.format(new Date(duration * 1000)));
-            list.add(map);
-        }
-        return list;
+        startActivity(intent);
     }
 }
