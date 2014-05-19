@@ -137,6 +137,8 @@ public class SessionActivity extends Activity implements ActionBar.TabListener {
             Bundle b = new Bundle();
             b.putLong("testId", testId);
             b.putLong("sessionId", sessionId);
+            b.putDouble("latitude", currentLat);
+            b.putDouble("longitude", currentLong);
             intent.putExtras(b);
             startActivity(intent);
         } else if (id == R.id.action_endSession) {
@@ -182,12 +184,15 @@ public class SessionActivity extends Activity implements ActionBar.TabListener {
                 return logFragment;
             }
             if (position == 1) {
+                Bundle arguments = new Bundle();
+                arguments.putLong("sessionId", sessionId);
+                arguments.putDouble("latitude", currentLat);
+                arguments.putDouble("longitude", currentLong);
                 if (logMapFragment == null) {
-                    Bundle arguments = new Bundle();
-                    arguments.putLong("sessionId", sessionId);
                     logMapFragment = new LogMapFragment();
                     logMapFragment.setArguments(arguments);
                 }
+                logMapFragment.setArguments(arguments);
                 return logMapFragment;
             }
             return null;

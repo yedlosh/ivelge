@@ -134,14 +134,10 @@ public class NewTestActivity extends ActionBarActivity {
         newTest.setSessions(sessions);
         lin = (LinearLayout) findViewById(R.id.new_test_tasks_layout);
 
-        List<String> tasks = new ArrayList<String>();
-
         for (int i = 0; i < lin.getChildCount(); i++) {
             text = (EditText) lin.getChildAt(i);
-            tasks.add(text.toString());
+            newTest.addTask(text.getText().toString());
         }
-
-        newTest.setTasks(tasks);
 
         TestDataSource dataSource = new TestDataSource(this);
         dataSource.open();
