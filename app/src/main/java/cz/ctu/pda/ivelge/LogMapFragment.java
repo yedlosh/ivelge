@@ -19,7 +19,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.List;
 
 
-public class LogMapFragment extends MapFragment {
+public class LogMapFragment extends Fragment {
 
     private SessionDataSource dataSource;
     private GoogleMap map;
