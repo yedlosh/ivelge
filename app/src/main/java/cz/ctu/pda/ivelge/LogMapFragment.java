@@ -15,6 +15,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.openenviron.andeasylib.EasyLocation;
 
 import java.util.List;
 
@@ -24,6 +25,7 @@ public class LogMapFragment extends Fragment {
     private SessionDataSource dataSource;
     private GoogleMap map;
     private Long sessionId;
+    private LatLng currentLoc;
 
 
     @Override
@@ -33,6 +35,7 @@ public class LogMapFragment extends Fragment {
         dataSource.open();
         Bundle b=getActivity().getIntent().getExtras();
         sessionId=b.getLong("sessionId");
+        currentLoc=new LatLng(b.getDouble("latitude"), b.getDouble("longitude"));
     }
 
 
@@ -43,6 +46,7 @@ public class LogMapFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_map, container, false);
         MapFragment mapFragment=((MapFragment) getFragmentManager().findFragmentById(R.id.map));
         map = mapFragment.getMap();
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLoc, 15));
         Session session = dataSource.getSession(sessionId);
         List<Log> logs = session.getLogs();
         createMarks(logs);
