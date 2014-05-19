@@ -60,12 +60,20 @@ public class Test implements Comparable<Test> {
         this.tasks = tasks;
     }
 
+    public void addTask(String task){
+        tasks.add(task);
+    }
+
     public List<Category> getCategories() {
         return categories;
     }
 
     public void setCategories(List<Category> categories) {
         this.categories = categories;
+    }
+
+    public void addCategory(Category category){
+        categories.add(category);
     }
 
     public long getTimestamp(){
@@ -90,6 +98,10 @@ public class Test implements Comparable<Test> {
 
     public void setSessions(List<Session> sessions) {
         this.sessions = sessions;
+    }
+
+    public void addSession(Session session){
+        sessions.add(session);
     }
 
     @Override

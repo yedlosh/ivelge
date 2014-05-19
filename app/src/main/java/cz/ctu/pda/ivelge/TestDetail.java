@@ -23,19 +23,33 @@ public class TestDetail extends ListActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_test_detail);
+
+        dataSource = new SessionDataSource(this);
+
         Bundle b = getIntent().getExtras();
-        this.setTitle(b.getString("name"));
-        dataSource.open();
-        String ids=b.getString("id");
-        id=Long.parseLong(ids);
-        List<Session> sessions=dataSource.getTestSessions(id);
-        List<Map<String, String>> list=getdata(sessions);
-        String[] from = {"participant", "finished","duration","logs"};
-        int[] to={R.id.participant_name,R.id.finished_text,R.id.duration_text,R.id.logs_text};
-        SimpleAdapter adapter = new SimpleAdapter(this,list,R.layout.test_detail_list_item,from,to);
-        setListAdapter(adapter);
+
+        if(b != null){
+            if(b.containsKey("name")){
+                this.setTitle(b.getString("name"));
+            }
+            if(b.containsKey("id")){
+                String ids=b.getString("id");
+                id=Long.parseLong(ids);
+
+                dataSource.open();
+                List<Session> sessions=dataSource.getTestSessions(id);
+                List<Map<String, String>> list=getdata(sessions);
+
+                String[] from = {"participant", "finished","duration","logs"};
+                int[] to={R.id.participant_name,R.id.finished_text,R.id.duration_text,R.id.logs_text};
+                SimpleAdapter adapter = new SimpleAdapter(this,list,R.layout.test_detail_list_item,from,to);
+                setListAdapter(adapter);
+            }
+        }
     }
 
     @Override

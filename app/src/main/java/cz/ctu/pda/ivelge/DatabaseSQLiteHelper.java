@@ -49,7 +49,7 @@ public class DatabaseSQLiteHelper extends SQLiteOpenHelper {
 
 
     private static final String DATABASE_NAME = "ivelge.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
 
     // Table creation sql statements
     private static final String TEST_CREATE = "create table "
@@ -64,8 +64,8 @@ public class DatabaseSQLiteHelper extends SQLiteOpenHelper {
     private static final String SESSION_CREATE = "create table "
             + TABLE_SESSION + "("
             + SESSION_ID + " integer primary key not null, "
-            + SESSION_STARTTIME + " integer not null, "
-            + SESSION_ENDTIME + " integer not null, "
+            + SESSION_STARTTIME + " integer, "
+            + SESSION_ENDTIME + " integer, "
             + SESSION_PRETEST + " text, "
             + SESSION_POSTTEST + " text, "
             + SESSION_TESTID + " integer, "

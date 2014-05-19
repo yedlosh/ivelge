@@ -24,14 +24,22 @@ public class MainActivity extends ListActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
-        dataSource=new TestDataSource(this);
+
+        dataSource = new TestDataSource(this);
         dataSource.open();
+
         List<Test> tests=dataSource.getAllTests();
+        android.util.Log.i(MainActivity.class.getName(),"Listing test count: " + tests.size());
+
         List<Map<String, String>> list=getdata(tests);
+
         String[] from = {"timestamp", "testName", "participantsNumber","uploaded"};
         int[] to={R.id.date,R.id.test_name,R.id.participant_number,R.id.upload};
+
         SimpleAdapter adapter = new SimpleAdapter(this,list,R.layout.test_list_item,from,to);
         setListAdapter(adapter);
     }

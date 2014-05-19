@@ -11,7 +11,7 @@ public class Log {
     private long timestamp;
     private int priority;
     private double latitude;
-    private double longitude;  //TODO change regarding the gMaps API
+    private double longitude;
     private String description;
     private File photo;
     private long sessionId;
