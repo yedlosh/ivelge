@@ -105,4 +105,8 @@ public class Session {
     public int getNumberOfLogs(){
         return logs.size();
     }
+
+    public boolean started(){
+        return startTime != -1;
+    }
 }

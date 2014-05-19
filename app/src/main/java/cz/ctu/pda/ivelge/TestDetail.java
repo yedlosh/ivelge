@@ -20,6 +20,7 @@ import java.util.Map;
 public class TestDetail extends ListActivity {
     SessionDataSource dataSource;
     public long id;
+    List<Session> sessions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +42,7 @@ public class TestDetail extends ListActivity {
                 id=Long.parseLong(ids);
 
                 dataSource.open();
-                List<Session> sessions=dataSource.getTestSessions(id);
+                sessions = dataSource.getTestSessions(id);
                 List<Map<String, String>> list=getdata(sessions);
 
                 String[] from = {"participant", "finished","duration","logs"};
@@ -85,7 +86,7 @@ public class TestDetail extends ListActivity {
         Bundle b=new Bundle();
         b.putString("name",name);
         b.putLong("testId",id);
-        b.putInt("position",position);
+        b.putLong("sessionId",sessions.get(position).getId());
         intent.putExtras(b);
         startActivity(intent);
     }

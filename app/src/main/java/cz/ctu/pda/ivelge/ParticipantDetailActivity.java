@@ -22,35 +22,74 @@ public class ParticipantDetailActivity extends ActionBarActivity {
     private SessionDataSource dataSource;
     private Session session;
     private long testId;
+
     @Override
+
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_participant_detail);
-        Bundle b=getIntent().getExtras();
-        this.setTitle(b.getString("name"));
+
+        dataSource = new SessionDataSource(this);
         dataSource.open();
-        testId=b.getLong("testId");
-        int position=b.getInt("position");
-        List<Session> sessions=dataSource.getTestSessions(testId);
-        session=getdata(sessions,position);
-        EditText pretest=(EditText)findViewById(R.id.pretest);
-        pretest.setText(session.getPreTest());
-        TextView posttest_label=(TextView)findViewById(R.id.posttest_label);
-        EditText posttest=(EditText)findViewById(R.id.posttest);
-        Button viewLogBtn=(Button)findViewById(R.id.view_log_btn);
-        Button startSessionBtn=(Button)findViewById(R.id.start_session_btn);
-        if(session.getStartTime()==-1){//not started
-            posttest_label.setVisibility(2);//gone
-            posttest.setVisibility(2);//gone
-            viewLogBtn.setVisibility(2);//gone
-            startSessionBtn.setVisibility(0);//visible
-        }else{
-            posttest_label.setVisibility(0);//visible
-            posttest.setVisibility(0);//visible
-            posttest.setText(session.getPostTest());
-            viewLogBtn.setVisibility(0);//visible
-            startSessionBtn.setVisibility(2);//gone
+
+        Bundle b = getIntent().getExtras();
+
+        if (b != null) {
+            if (b.containsKey("name")) {
+                this.setTitle(b.getString("name"));
+            }
+            if (b.containsKey("sessionId") && b.containsKey("testId")) {
+                testId = b.getLong("testId");
+                long sessionId = b.getLong("sessionId");
+
+                session = dataSource.getSession(sessionId);
+
+                EditText pretest = (EditText) findViewById(R.id.pretest);
+                if(session.getPreTest() != null) {
+                    pretest.setText(session.getPreTest());
+                }
+
+                EditText posttest = (EditText) findViewById(R.id.posttest);
+
+                TextView posttest_label = (TextView) findViewById(R.id.posttest_label);
+                Button viewLogBtn = (Button) findViewById(R.id.view_log_btn);
+                Button startSessionBtn = (Button) findViewById(R.id.start_session_btn);
+                if (!session.started()) {
+                    posttest_label.setVisibility(View.GONE);
+                    posttest.setVisibility(View.GONE);
+                    viewLogBtn.setVisibility(View.GONE);
+                    startSessionBtn.setVisibility(View.VISIBLE);
+                } else {
+                    posttest_label.setVisibility(View.VISIBLE);
+                    posttest.setVisibility(View.VISIBLE);
+                    if(session.getPostTest() != null) {
+                        posttest.setText(session.getPostTest());
+                    }
+                    viewLogBtn.setVisibility(View.VISIBLE);
+                    startSessionBtn.setVisibility(View.GONE);
+                }
+            }
         }
+    }
+
+    @Override
+    protected void onPause(){
+        EditText pretest = (EditText) findViewById(R.id.pretest);
+        if(pretest.getText().length() != 0){
+            session.setPreTest(pretest.getText().toString());
+        }
+        if(session.started()){
+            EditText posttest = (EditText) findViewById(R.id.posttest);
+            if(posttest.getText().length() != 0){
+                session.setPostTest(posttest.getText().toString());
+            }
+        }
+
+        dataSource.commitSession(session);
+
+        super.onPause();
     }
 
     @Override
@@ -78,27 +117,23 @@ public class ParticipantDetailActivity extends ActionBarActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-    private Session getdata(List<Session> sessions,int position){
-        return sessions.get(position);
-    }
-
 
     public void viewLog(View view) {
-        Intent intent=new Intent(this, SessionActivity.class);
-        Bundle b=new Bundle();
-        b.putLong("sessionId",session.getId());
-        b.putString("name",session.getParticipantName());
-        b.putLong("endTime",session.getEndTime());
+        Intent intent = new Intent(this, SessionActivity.class);
+        Bundle b = new Bundle();
+        b.putLong("sessionId", session.getId());
+        b.putString("name", session.getParticipantName());
+        b.putLong("endTime", session.getEndTime());
         intent.putExtras(b);
         startActivity(intent);
     }
 
     public void startSession(View view) {
-        Intent intent=new Intent(this, StartSessionActivity.class);
-        Bundle b=new Bundle();
-        b.putLong("testId",testId);
-        b.putLong("sessionId",session.getId());
-        b.putString("name",session.getParticipantName());
+        Intent intent = new Intent(this, StartSessionActivity.class);
+        Bundle b = new Bundle();
+        b.putLong("testId", testId);
+        b.putLong("sessionId", session.getId());
+        b.putString("name", session.getParticipantName());
         intent.putExtras(b);
         startActivity(intent);
     }
