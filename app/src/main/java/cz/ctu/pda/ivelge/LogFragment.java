@@ -42,9 +42,13 @@ public class LogFragment extends ListFragment {
 
         super.onCreate(savedInstanceState);
 
-        Bundle b = getActivity().getIntent().getExtras();
+        Bundle b = savedInstanceState;
 
-        sessionId = b.getLong("sessionId");
+        if(getArguments().containsKey("sessionId")) {
+            sessionId = getArguments().getLong("sessionId");
+        } else if (b != null && b.containsKey("sessionId")){
+            sessionId = b.getLong("sessionId");
+        }
 
         logDataSource = new LogDataSource(getActivity());
         categoryDataSource = new CategoryDataSource(getActivity());
@@ -99,6 +103,13 @@ public class LogFragment extends ListFragment {
         startActivity(intent);
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState){
+        outState.putLong("sessionId",sessionId);
+
+        super.onSaveInstanceState(outState);
+    }
+
 
     private List<Map<String, String>> getdata(List<Log> logs) {
 
@@ -112,13 +123,12 @@ public class LogFragment extends ListFragment {
             log = logs.get(i);
             SimpleDateFormat dateFormat = new SimpleDateFormat("H:mm");
             map.put("id", Long.toString(log.getId()));
-            map.put("timestamp", dateFormat.format(new Date(log.getTimestamp() * 1000)));
-            map.put("priority", Integer.toString(log.getPriority()));
-            //todo
-            map.put("task", "vyresit.....");
+            map.put("timestamp", "Time: " + dateFormat.format(new Date(log.getTimestamp() * 1000)));
+            map.put("Priority ", Integer.toString(log.getPriority()));
+            map.put("task", "Task " + log.getTaskIndex()); //todo
             Category category = categoryDataSource.getCategory(log.getCategoryId());
             map.put("category", category.getName());
-            map.put("subcategory", category.getSubcategories().get(log.getSubcategoryIndex()));
+            map.put("subcategory1", category.getSubcategory(log.getSubcategoryIndex()));
             list.add(map);
         }
         categoryDataSource.close();

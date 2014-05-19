@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
+import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -49,6 +50,7 @@ public class SessionActivity extends Activity implements ActionBar.TabListener {
 
     private LogFragment logFragment;
     private LogMapFragment logMapFragment;
+    private BroadcastReceiver br;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +63,12 @@ public class SessionActivity extends Activity implements ActionBar.TabListener {
         if (b != null && b.containsKey("sessionId")) {
             sessionId = b.getLong("sessionId");
             testId = b.getLong("testId");
+        } else {
+            b = savedInstanceState;
+            if (b != null && b.containsKey("sessionId")) {
+                sessionId = b.getLong("sessionId");
+                testId = b.getLong("testId");
+            }
         }
 
         final ActionBar actionBar = getActionBar();
@@ -104,7 +112,7 @@ public class SessionActivity extends Activity implements ActionBar.TabListener {
 
         EasyLocation.startGPS(this);
 
-        BroadcastReceiver br = new BroadcastReceiver() {
+        br = new BroadcastReceiver() {
 
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -142,9 +150,27 @@ public class SessionActivity extends Activity implements ActionBar.TabListener {
             intent.putExtras(b);
             startActivity(intent);
         } else if (id == R.id.action_endSession) {
-            //TODO save EVERYTHING
+            SessionDataSource sessionDAO = new SessionDataSource(this);
+            sessionDAO.open();
+            Session session = sessionDAO.getSession(sessionId);
+            session.setEndTime(System.currentTimeMillis() / 1000);
+            sessionDAO.commitSession(session);
+
+            Intent intent=new Intent(this,ParticipantDetailActivity.class);
+            Bundle b=new Bundle();
+            b.putString("name",session.getParticipantName());
+            b.putLong("testId",testId);
+            b.putLong("sessionId",sessionId);
+            intent.putExtras(b);
+            NavUtils.navigateUpTo(this,intent);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onDestroy() {
+        unregisterReceiver(br);
+        super.onDestroy();
     }
 
     @Override
@@ -175,12 +201,12 @@ public class SessionActivity extends Activity implements ActionBar.TabListener {
         @Override
         public Fragment getItem(int position) {
             if (position == 0) {
+                Bundle arguments = new Bundle();
+                arguments.putLong("sessionId", sessionId);
                 if (logFragment == null) {
-                    Bundle arguments = new Bundle();
-                    arguments.putLong("sessionId", sessionId);
                     logFragment = new LogFragment();
-                    logFragment.setArguments(arguments);
                 }
+                logFragment.setArguments(arguments);
                 return logFragment;
             }
             if (position == 1) {
@@ -190,7 +216,6 @@ public class SessionActivity extends Activity implements ActionBar.TabListener {
                 arguments.putDouble("longitude", currentLong);
                 if (logMapFragment == null) {
                     logMapFragment = new LogMapFragment();
-                    logMapFragment.setArguments(arguments);
                 }
                 logMapFragment.setArguments(arguments);
                 return logMapFragment;
@@ -214,5 +239,12 @@ public class SessionActivity extends Activity implements ActionBar.TabListener {
             }
             return null;
         }
+    }
+
+    @Override
+    public void onSaveInstanceState (Bundle outState){
+        outState.putLong("sessionId",sessionId);
+        outState.putLong("testId",testId);
+        super.onSaveInstanceState(outState);
     }
 }

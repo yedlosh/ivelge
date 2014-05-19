@@ -31,6 +31,10 @@ public class EventDetailActivity extends ActionBarActivity {
 
         Bundle b = getIntent().getExtras();
         this.logId = b.getLong("logId");
+
+        logDataSource = new LogDataSource(this);
+        categoryDataSource = new CategoryDataSource(this);
+
         logDataSource.open();
         categoryDataSource.open();
         Log log = logDataSource.getLog(logId);

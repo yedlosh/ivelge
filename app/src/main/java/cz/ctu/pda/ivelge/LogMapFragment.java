@@ -33,15 +33,32 @@ public class LogMapFragment extends Fragment {
         super.onCreate(savedInstanceState);
         dataSource = new SessionDataSource(getActivity());
         dataSource.open();
-        Bundle b=getActivity().getIntent().getExtras();
-        sessionId=b.getLong("sessionId");
-        currentLoc=new LatLng(b.getDouble("latitude"), b.getDouble("longitude"));
+
+        Bundle b = savedInstanceState;
+
+        if(getArguments().containsKey("sessionId")) {
+            sessionId = getArguments().getLong("sessionId");
+            currentLoc=new LatLng(getArguments().getDouble("latitude"), getArguments().getDouble("longitude"));
+        } else if (b != null && b.containsKey("sessionId")){
+            sessionId = b.getLong("sessionId");
+            currentLoc=new LatLng(b.getDouble("latitude"), b.getDouble("longitude"));
+        }
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        Bundle b = savedInstanceState;
+
+        if(getArguments().containsKey("sessionId")) {
+            sessionId = getArguments().getLong("sessionId");
+            currentLoc=new LatLng(getArguments().getDouble("latitude"), getArguments().getDouble("longitude"));
+        } else if (b != null && b.containsKey("sessionId")){
+            sessionId = b.getLong("sessionId");
+            currentLoc=new LatLng(b.getDouble("latitude"), b.getDouble("longitude"));
+        }
 
         View rootView = inflater.inflate(R.layout.fragment_map, container, false);
         MapFragment mapFragment=((MapFragment) getFragmentManager().findFragmentById(R.id.map));

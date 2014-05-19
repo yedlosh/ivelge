@@ -22,6 +22,7 @@ public class ParticipantDetailActivity extends ActionBarActivity {
     private SessionDataSource dataSource;
     private Session session;
     private long testId;
+    private boolean starting;
 
     @Override
 
@@ -86,6 +87,9 @@ public class ParticipantDetailActivity extends ActionBarActivity {
                 session.setPostTest(posttest.getText().toString());
             }
         }
+        if(starting){
+            session.setStartTime(System.currentTimeMillis() / 1000);
+        }
 
         dataSource.commitSession(session);
 
@@ -135,6 +139,7 @@ public class ParticipantDetailActivity extends ActionBarActivity {
         b.putLong("sessionId", session.getId());
         b.putString("name", session.getParticipantName());
         intent.putExtras(b);
+        starting = true;
         startActivity(intent);
     }
 }

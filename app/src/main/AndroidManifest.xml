@@ -58,7 +58,8 @@
         </activity>
         <activity
             android:name="cz.ctu.pda.ivelge.SessionActivity"
-            android:label="Session" >
+            android:label="Session"
+            android:parentActivityName="cz.ctu.pda.ivelge.ParticipantDetailActivity">
         </activity>
         <activity
             android:name="cz.ctu.pda.ivelge.NewTestActivity"

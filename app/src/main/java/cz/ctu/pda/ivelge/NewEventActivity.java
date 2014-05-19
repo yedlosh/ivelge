@@ -27,6 +27,8 @@ public class NewEventActivity extends ActionBarActivity implements AdapterView.O
     private int selectedCategory = 0;
     private Spinner subcategorySpinner;
     private ArrayAdapter<String> subcategoryAdapter;
+    private double latitude;
+    private double longitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +40,8 @@ public class NewEventActivity extends ActionBarActivity implements AdapterView.O
         Bundle b = getIntent().getExtras();
         testId = b.getLong("testId");
         sessionId = b.getLong("sessionId");
+        latitude = b.getDouble("latitude");
+        longitude = b.getDouble("longitude");
 
         testDataSource = new TestDataSource(this);
         testDataSource.open();
@@ -75,6 +79,12 @@ public class NewEventActivity extends ActionBarActivity implements AdapterView.O
 
     }
 
+    @Override
+    public void onDestroy() {
+        categoryDataSource.close();
+        testDataSource.close();
+        super.onDestroy();
+    }
 
 /*    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -111,7 +121,12 @@ public class NewEventActivity extends ActionBarActivity implements AdapterView.O
     }
 
     public void discardEvent(View view) {
-        NavUtils.navigateUpFromSameTask(this);
+        Intent intent = new Intent(this, SessionActivity.class);
+        Bundle b = new Bundle();
+        b.putLong("testId", testId);
+        b.putLong("sessionId", sessionId);
+        intent.putExtras(b);
+        NavUtils.navigateUpTo(this,intent);
     }
 
     public void saveEvent(View view) {
@@ -121,16 +136,30 @@ public class NewEventActivity extends ActionBarActivity implements AdapterView.O
         Spinner prioritySpinner = (Spinner) findViewById(R.id.new_event_priority_spinner);
         log.setPriority(prioritySpinner.getSelectedItemPosition());
 
-        Spinner taskSpinner = (Spinner) findViewById(R.id.new_event_task_spinner);
-        log.setTaskIndex(taskSpinner.getSelectedItemPosition());
+        log.setLatitude(latitude);
+        log.setLongitude(longitude);
+
+        EditText description = (EditText) findViewById(R.id.new_event_comment);
+        log.setDescription(description.getText().toString());
 
         log.setCategoryId(categories.get(selectedCategory).getId());
 
         log.setSubcategoryIndex(subcategorySpinner.getSelectedItemPosition());
 
-        EditText description = (EditText) findViewById(R.id.new_event_comment);
-        log.setDescription(description.getText().toString());
+        Spinner taskSpinner = (Spinner) findViewById(R.id.new_event_task_spinner);
+        log.setTaskIndex(taskSpinner.getSelectedItemPosition());
 
-        NavUtils.navigateUpFromSameTask(this);
+
+        LogDataSource logDAO = new LogDataSource(getApplicationContext());
+        logDAO.open();
+        logDAO.commitLog(log);
+        logDAO.close();
+
+        Intent intent = new Intent(this, SessionActivity.class);
+        Bundle b = new Bundle();
+        b.putLong("testId", testId);
+        b.putLong("sessionId", sessionId);
+        intent.putExtras(b);
+        NavUtils.navigateUpTo(this,intent);
     }
 }

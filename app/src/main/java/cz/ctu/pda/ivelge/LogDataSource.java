@@ -98,7 +98,7 @@ public class LogDataSource {
         //File img = new File(context.getFilesDir() + "/img" + imgPath);
         File img = null;
 
-        if(!imgPath.isEmpty())
+        if(imgPath != null && imgPath.isEmpty())
         img = new File(imgPath);
 
         Log log = new Log(id, timestamp, priority, latitude, longitude, description, img, sessionId, categoryId, subcategoryIndex, taskIndex);
