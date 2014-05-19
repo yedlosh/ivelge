@@ -3,11 +3,13 @@ package cz.ctu.pda.ivelge;
 import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
@@ -22,6 +24,9 @@ public class StartSessionActivity extends ActionBarActivity implements
     private ActionBar actionBar;
     private TestDataSource dataSource;
     private ArrayAdapter<String> spAdapter;
+    private String name;
+    private Long testId;
+    private int position;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +35,10 @@ public class StartSessionActivity extends ActionBarActivity implements
         dataSource=new TestDataSource(this);
         dataSource.open();
         Bundle b = getIntent().getExtras();
-        this.setTitle(b.getString("name"));
-        long testId=b.getLong("testId");
+        name=b.getString("name");
+        this.setTitle(name);
+        testId=b.getLong("testId");
+        position=b.getInt("position");
         Test test=dataSource.getTest(testId);
         Spinner spinner=(Spinner)findViewById(R.id.tasks_spinner);
         spAdapter=new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,test.getTasks());
@@ -95,7 +102,15 @@ public class StartSessionActivity extends ActionBarActivity implements
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.end_session) {
-            //todo END SESSION
+            //??todo??
+            dataSource.close();
+            Intent intent=new Intent(this,ParticipantDetailActivity.class);
+            Bundle b=new Bundle();
+            b.putString("name",name);
+            b.putLong("testId",testId);
+            b.putInt("position",position);
+            intent.putExtras(b);
+            startActivity(intent);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -114,5 +129,13 @@ public class StartSessionActivity extends ActionBarActivity implements
     @Override
     public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
 
+    }
+
+    public void addNewEvent(View view) {
+        Intent intent=new Intent(this,NewEventActivity.class);
+        Bundle b=new Bundle();
+        //todo
+        intent.putExtras(b);
+        startActivity(intent);
     }
 }

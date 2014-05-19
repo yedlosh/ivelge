@@ -28,7 +28,7 @@ public class SessionActivity extends ActionBarActivity implements
         Bundle b = getIntent().getExtras();
         this.setTitle(b.getString("name"));
         long endTime=b.getLong("endTime");
-        TextView finish=(TextView)findViewById(R.id.finished_text);
+        TextView finish=(TextView)findViewById(R.id.final_time_value);
         SimpleDateFormat dateFormat = new SimpleDateFormat("H:mm");
         finish.setText(dateFormat.format(new Date(endTime * 1000)));
         // Initilization
