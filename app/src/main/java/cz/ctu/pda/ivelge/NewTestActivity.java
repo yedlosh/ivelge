@@ -21,10 +21,14 @@ public class NewTestActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_new_test);
+
         linearPart = (LinearLayout) findViewById(R.id.new_test_participants_layout);
         linearTask = (LinearLayout) findViewById(R.id.new_test_tasks_layout);
+
         if (savedInstanceState != null) {
             EditText e;
             int pcount = linearPart.getChildCount();

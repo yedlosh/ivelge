@@ -17,7 +17,7 @@ import java.util.List;
 
 
 public class NewEventActivity extends ActionBarActivity implements AdapterView.OnItemSelectedListener {
-    private int selectedTaskIndex;
+    private int selectedTaskIndex = 0;
     private TestDataSource testDataSource;
     private CategoryDataSource categoryDataSource;
     private long testId;
@@ -46,7 +46,7 @@ public class NewEventActivity extends ActionBarActivity implements AdapterView.O
         categoryDataSource.open();
         categories = test.getCategories();
 
-        selectedTaskIndex = b.getInt("selectedTaskIndex");
+        //selectedTaskIndex = b.getInt("selectedTaskIndex");
 
         Spinner taskSpinner = (Spinner) findViewById(R.id.new_event_task_spinner);
         ArrayAdapter<String> taskAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, test.getTasks());

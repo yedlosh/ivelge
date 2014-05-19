@@ -45,6 +45,7 @@ public class SessionActivity extends Activity implements ActionBar.TabListener {
     double currentLat;
     double currentLong;
     long sessionId;
+    long testId;
 
     private LogFragment logFragment;
     private LogMapFragment logMapFragment;
@@ -59,6 +60,7 @@ public class SessionActivity extends Activity implements ActionBar.TabListener {
 
         if (b != null && b.containsKey("sessionId")) {
             sessionId = b.getLong("sessionId");
+            testId = b.getLong("testId");
         }
 
         final ActionBar actionBar = getActionBar();
@@ -121,7 +123,7 @@ public class SessionActivity extends Activity implements ActionBar.TabListener {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.session, menu);
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -130,9 +132,15 @@ public class SessionActivity extends Activity implements ActionBar.TabListener {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_endSession) {
+        if (id == R.id.action_newEvent) {
+            Intent intent = new Intent(this, NewEventActivity.class);
+            Bundle b = new Bundle();
+            b.putLong("testId", testId);
+            b.putLong("sessionId", sessionId);
+            intent.putExtras(b);
+            startActivity(intent);
+        } else if (id == R.id.action_endSession) {
             //TODO save EVERYTHING
-            return true;
         }
         return super.onOptionsItemSelected(item);
     }
