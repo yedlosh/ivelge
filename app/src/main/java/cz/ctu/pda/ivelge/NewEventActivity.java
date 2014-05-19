@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -57,9 +58,12 @@ public class NewEventActivity extends ActionBarActivity implements AdapterView.O
         ArrayAdapter<CharSequence> priorityAdapter = ArrayAdapter.createFromResource(this,R.array.priority_array, android.R.layout.simple_spinner_item);
         prioritySpinner.setAdapter(priorityAdapter);
 
-        //???
+        List<String> categoryList = new ArrayList<String>();
+        for(Category cat : categories){
+            categoryList.add(cat.getName());
+        }
         Spinner categorySpinner = (Spinner) findViewById(R.id.new_event_category_spinner);
-        ArrayAdapter<Category> categoryAdapter = new ArrayAdapter<Category>(this, android.R.layout.simple_spinner_item, categories);
+        ArrayAdapter<String> categoryAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categoryList);
         categorySpinner.setAdapter(categoryAdapter);
         categorySpinner.setOnItemSelectedListener(this);
 
@@ -93,7 +97,7 @@ public class NewEventActivity extends ActionBarActivity implements AdapterView.O
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
-        if (id == R.id.new_event_category_spinner) {
+        if (view.getId() == R.id.new_event_category_spinner) {
             selectedCategory = pos;
             subcategoryAdapter.clear();
             subcategoryAdapter.addAll(categories.get(selectedCategory).getSubcategories());

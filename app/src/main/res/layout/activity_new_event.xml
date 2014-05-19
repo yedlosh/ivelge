@@ -74,7 +74,7 @@
         android:id="@+id/new_event_comment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/comments"/>
+        android:hint="@string/comments"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

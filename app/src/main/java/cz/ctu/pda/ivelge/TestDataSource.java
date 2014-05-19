@@ -129,7 +129,7 @@ public class TestDataSource {
             categoryList = new ArrayList<Category>();
 
             for (String catIdString : categoryTokens) {
-                Category category = categoryDAO.getCategory(Long.getLong(catIdString));
+                Category category = categoryDAO.getCategory(Long.parseLong(catIdString));
                 categoryList.add(category);
             }
         }
