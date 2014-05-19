@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
@@ -18,7 +19,7 @@ import java.util.List;
 
 
 public class StartSessionActivity extends ActionBarActivity implements
-        ActionBar.TabListener {
+        ActionBar.TabListener,AdapterView.OnItemSelectedListener {
     private ViewPager viewPager;
     private TabsPagerAdapter mAdapter;
     private ActionBar actionBar;
@@ -27,6 +28,7 @@ public class StartSessionActivity extends ActionBarActivity implements
     private String name;
     private Long testId;
     private Long sessionId;
+    private int selectedTaskIndex=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +43,7 @@ public class StartSessionActivity extends ActionBarActivity implements
         sessionId=b.getLong("sessionId");
         Test test=dataSource.getTest(testId);
         Spinner spinner=(Spinner)findViewById(R.id.tasks_spinner);
+        spinner.setOnItemSelectedListener(this);
         spAdapter=new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,test.getTasks());
         spAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
@@ -108,7 +111,7 @@ public class StartSessionActivity extends ActionBarActivity implements
             Bundle b=new Bundle();
             b.putString("name",name);
             b.putLong("testId",testId);
-            b.putLong("sessionId",sessionId);
+            b.putLong("sessionId", sessionId);
             intent.putExtras(b);
             startActivity(intent);
             return true;
@@ -134,8 +137,18 @@ public class StartSessionActivity extends ActionBarActivity implements
     public void addNewEvent(View view) {
         Intent intent=new Intent(this,NewEventActivity.class);
         Bundle b=new Bundle();
-        //todo
+        b.putInt("selectedTaskIndex",selectedTaskIndex);
         intent.putExtras(b);
         startActivity(intent);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
+        selectedTaskIndex=pos;
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+        //selectedTaskIndex=0;
     }
 }
