@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -18,26 +19,20 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.List;
 
 
-public class LogMapFragment extends Fragment {
+public class LogMapFragment extends MapFragment {
 
     private SessionDataSource dataSource;
     private GoogleMap map;
+    private Long sessionId;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Activity parentActivity = getActivity();
-        map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
-                .getMap();
-        dataSource = new SessionDataSource(parentActivity);
+        dataSource = new SessionDataSource(getActivity());
         dataSource.open();
-
-        Bundle b = parentActivity.getIntent().getExtras();
-        Long id = Long.parseLong(b.getString("id"));
-        Session session = dataSource.getSession(id);
-        List<Log> logs = session.getLogs();
-        createMarks(logs);
+        Bundle b=getActivity().getIntent().getExtras();
+        sessionId=b.getLong("sessionId");
     }
 
 
@@ -46,6 +41,11 @@ public class LogMapFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_map, container, false);
+        MapFragment mapFragment=((MapFragment) getFragmentManager().findFragmentById(R.id.map));
+        map = mapFragment.getMap();
+        Session session = dataSource.getSession(sessionId);
+        List<Log> logs = session.getLogs();
+        createMarks(logs);
 
         return rootView;
     }
