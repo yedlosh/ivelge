@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -45,9 +46,37 @@ public class TestDetail extends ListActivity {
                 sessions = dataSource.getTestSessions(id);
                 List<Map<String, String>> list=getdata(sessions);
 
-                String[] from = {"participant", "finished","duration","logs"};
-                int[] to={R.id.participant_name,R.id.finished_text,R.id.duration_text,R.id.logs_text};
+                String[] from = {"participant", "finished","duration","logs",""};
+                int[] to={R.id.participant_name,R.id.finished_text,R.id.duration_text,R.id.logs_text,R.id.notStarted_text};
                 SimpleAdapter adapter = new SimpleAdapter(this,list,R.layout.test_detail_list_item,from,to);
+
+                SimpleAdapter.ViewBinder viewBinder = new SimpleAdapter.ViewBinder() {
+                    int current = 0;
+                    boolean first = true;
+                    public boolean setViewValue(View view, Object data, String textRepresentation) {
+                        //android.util.Log.i(TestDetail.class.getName(),"AdapterView: " + view.getTag());
+                        if(view.getTag() != null && view.getTag().toString().equals("participantName")){
+                            TextView textView = (TextView) view;
+                            textView.setText(textRepresentation);
+                            if(first){
+                                first = false;
+                            } else {
+                                current++;
+                            }
+                        } else  if(view.getTag() != null && view.getTag().toString().equals("notStarted") && !sessions.get(current).started()){
+                            view.setVisibility(View.VISIBLE);
+                        } else if(!sessions.get(current).started()){
+                            TextView textView = (TextView) view;
+                            textView.setVisibility(View.GONE);
+                        } else {
+                            TextView textView = (TextView) view;
+                            textView.setText(textRepresentation);
+                        }
+                        return true;
+                    }
+                };
+
+                adapter.setViewBinder(viewBinder);
                 setListAdapter(adapter);
             }
         }
