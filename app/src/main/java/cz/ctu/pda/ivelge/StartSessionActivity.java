@@ -48,7 +48,7 @@ public class StartSessionActivity extends ActionBarActivity implements
         spAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(spAdapter);
 
-        viewPager = (ViewPager) findViewById(R.id.pager);
+        viewPager = (ViewPager) findViewById(R.id.pagerStart);
         actionBar = getActionBar();
         mAdapter = new TabsPagerAdapter(getFragmentManager());
         viewPager.setAdapter(mAdapter);
