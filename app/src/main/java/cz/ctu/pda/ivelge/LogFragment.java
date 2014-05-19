@@ -34,6 +34,8 @@ public class LogFragment extends ListFragment {
         super.onCreate(savedInstanceState);
         Bundle b=getActivity().getIntent().getExtras();
         long sessionId=b.getLong("sessionId");
+        logDataSource=new LogDataSource(getActivity());
+        categoryDataSource=new CategoryDataSource(getActivity());
         logDataSource.open();
         logs=logDataSource.getSessionLogs(sessionId);
         List<Map<String, String>> list=getdata(logs);
