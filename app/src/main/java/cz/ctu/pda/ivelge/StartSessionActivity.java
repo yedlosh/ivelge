@@ -140,6 +140,7 @@ public class StartSessionActivity extends ActionBarActivity implements
         Bundle b=new Bundle();
         b.putInt("selectedTaskIndex",selectedTaskIndex);
         b.putLong("testId",testId);
+        b.putLong("sessionId",sessionId);
         intent.putExtras(b);
         startActivity(intent);
     }

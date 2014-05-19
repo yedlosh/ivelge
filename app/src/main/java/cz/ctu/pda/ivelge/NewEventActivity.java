@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class NewEventActivity extends ActionBarActivity implements AdapterView.O
         private TestDataSource testDataSource;
         private CategoryDataSource categoryDataSource;
         private long testId;
+        private long sessionId;
         private List<Category> categories;
         private int selectedCategory=0;
         private Spinner subcategorySpinner;
@@ -29,6 +31,7 @@ public class NewEventActivity extends ActionBarActivity implements AdapterView.O
         setContentView(R.layout.activity_new_event);
         Bundle b = getIntent().getExtras();
         testId=b.getLong("testId");
+        sessionId=b.getLong("sessionId");
 
         testDataSource=new TestDataSource(this);
         testDataSource.open();
@@ -103,6 +106,21 @@ public class NewEventActivity extends ActionBarActivity implements AdapterView.O
         startActivity(intent);
     }
     public void saveEvent(View view){
+        long timestamp = System.currentTimeMillis() / 1000;
+        Log log=new Log(timestamp,sessionId);
+
+        Spinner prioritySpinner=(Spinner)findViewById(R.id.new_event_priority_spinner);
+        log.setPriority(prioritySpinner.getSelectedItemPosition());
+
+        Spinner taskSpinner=(Spinner)findViewById(R.id.new_event_task_spinner);
+        log.setTaskIndex(taskSpinner.getSelectedItemPosition());
+
+        log.setCategoryId(categories.get(selectedCategory).getId());
+
+        log.setSubcategoryIndex(subcategorySpinner.getSelectedItemPosition());
+
+        EditText description=(EditText)findViewById(R.id.new_event_comment);
+        log.setDescription(description.getText().toString());
 
         Intent intent=new Intent(this,StartSessionActivity.class);
         startActivity(intent);
