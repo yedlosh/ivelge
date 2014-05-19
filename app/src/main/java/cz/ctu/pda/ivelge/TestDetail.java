@@ -85,7 +85,7 @@ public class TestDetail extends ListActivity {
         Intent intent=new Intent(this,ParticipantDetailActivity.class);
         Bundle b=new Bundle();
         b.putString("name",name);
-        b.putLong("testId",id);
+        b.putLong("testId",this.id);
         b.putLong("sessionId",sessions.get(position).getId());
         intent.putExtras(b);
         startActivity(intent);
