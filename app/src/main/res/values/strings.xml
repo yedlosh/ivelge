@@ -40,8 +40,6 @@
     <string name="comments">Comments...</string>
     <string name="new_event_discard">Discard</string>
 
-
-
     <string-array name="priority_array">
         <item>Priority 1</item>
         <item>Priority 2</item>
@@ -50,5 +48,12 @@
         <item>Priority 5</item>
     </string-array>
 
+    <string name="title_activity_session">Session</string>
+
+    <string name="title_log">Log</string>
+    <string name="title_map">Map</string>
+
+    <string name="action_newEvent">New Event</string>
+    <string name="action_endSession">End Session</string>
 
 </resources>

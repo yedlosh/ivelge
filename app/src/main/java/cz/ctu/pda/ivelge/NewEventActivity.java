@@ -1,6 +1,7 @@
 package cz.ctu.pda.ivelge;
 
 import android.content.Intent;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -16,51 +17,54 @@ import java.util.List;
 
 
 public class NewEventActivity extends ActionBarActivity implements AdapterView.OnItemSelectedListener {
-        private int selectedTaskIndex;
-        private TestDataSource testDataSource;
-        private CategoryDataSource categoryDataSource;
-        private long testId;
-        private long sessionId;
-        private List<Category> categories;
-        private int selectedCategory=0;
-        private Spinner subcategorySpinner;
-        private ArrayAdapter<String> subcategoryAdapter;
+    private int selectedTaskIndex;
+    private TestDataSource testDataSource;
+    private CategoryDataSource categoryDataSource;
+    private long testId;
+    private long sessionId;
+    private List<Category> categories;
+    private int selectedCategory = 0;
+    private Spinner subcategorySpinner;
+    private ArrayAdapter<String> subcategoryAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_new_event);
+
         Bundle b = getIntent().getExtras();
-        testId=b.getLong("testId");
-        sessionId=b.getLong("sessionId");
+        testId = b.getLong("testId");
+        sessionId = b.getLong("sessionId");
 
-        testDataSource=new TestDataSource(this);
+        testDataSource = new TestDataSource(this);
         testDataSource.open();
-        Test test=testDataSource.getTest(testId);
+        Test test = testDataSource.getTest(testId);
 
-        categoryDataSource=new CategoryDataSource(this);
+        categoryDataSource = new CategoryDataSource(this);
         categoryDataSource.open();
-        categories=categoryDataSource.getAllCategories();
+        categories = test.getCategories();
 
-        selectedTaskIndex=b.getInt("selectedTaskInex");
+        selectedTaskIndex = b.getInt("selectedTaskIndex");
 
-        Spinner taskSpinner=(Spinner)findViewById(R.id.new_event_task_spinner);
-        ArrayAdapter<String> taskAdapter=new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,test.getTasks());
+        Spinner taskSpinner = (Spinner) findViewById(R.id.new_event_task_spinner);
+        ArrayAdapter<String> taskAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, test.getTasks());
         taskSpinner.setAdapter(taskAdapter);
         taskSpinner.setSelection(selectedTaskIndex);
 
-        Spinner prioritySpinner=(Spinner)findViewById(R.id.new_event_priority_spinner);
-        ArrayAdapter<CharSequence> priorityAdapter=ArrayAdapter.createFromResource(this,
-                R.array.priority_array, android.R.layout.simple_spinner_item);
+        Spinner prioritySpinner = (Spinner) findViewById(R.id.new_event_priority_spinner);
+        ArrayAdapter<CharSequence> priorityAdapter = ArrayAdapter.createFromResource(this,R.array.priority_array, android.R.layout.simple_spinner_item);
         prioritySpinner.setAdapter(priorityAdapter);
 
         //???
-        Spinner categorySpinner=(Spinner)findViewById(R.id.new_event_category_spinner);
-        ArrayAdapter<Category> categoryAdapter=new ArrayAdapter<Category>(this,android.R.layout.simple_spinner_item,categories);
+        Spinner categorySpinner = (Spinner) findViewById(R.id.new_event_category_spinner);
+        ArrayAdapter<Category> categoryAdapter = new ArrayAdapter<Category>(this, android.R.layout.simple_spinner_item, categories);
         categorySpinner.setAdapter(categoryAdapter);
         categorySpinner.setOnItemSelectedListener(this);
 
-        subcategorySpinner=(Spinner)findViewById(R.id.new_event_subcategory_spinner);
-        subcategoryAdapter=new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,categories.get(selectedCategory).getSubcategories());
+        subcategorySpinner = (Spinner) findViewById(R.id.new_event_subcategory_spinner);
+        subcategoryAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories.get(selectedCategory).getSubcategories());
         subcategorySpinner.setAdapter(subcategoryAdapter);
         subcategorySpinner.setOnItemSelectedListener(this);
 
@@ -89,8 +93,8 @@ public class NewEventActivity extends ActionBarActivity implements AdapterView.O
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
-        if(id==R.id.new_event_category_spinner){
-            selectedCategory=pos;
+        if (id == R.id.new_event_category_spinner) {
+            selectedCategory = pos;
             subcategoryAdapter.clear();
             subcategoryAdapter.addAll(categories.get(selectedCategory).getSubcategories());
             subcategorySpinner.setAdapter(subcategoryAdapter);
@@ -101,28 +105,28 @@ public class NewEventActivity extends ActionBarActivity implements AdapterView.O
     public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
-    public void discardEvent(View view) {
-        Intent intent=new Intent(this,StartSessionActivity.class);
-        startActivity(intent);
-    }
-    public void saveEvent(View view){
-        long timestamp = System.currentTimeMillis() / 1000;
-        Log log=new Log(timestamp,sessionId);
 
-        Spinner prioritySpinner=(Spinner)findViewById(R.id.new_event_priority_spinner);
+    public void discardEvent(View view) {
+        NavUtils.navigateUpFromSameTask(this);
+    }
+
+    public void saveEvent(View view) {
+        long timestamp = System.currentTimeMillis() / 1000;
+        Log log = new Log(timestamp, sessionId);
+
+        Spinner prioritySpinner = (Spinner) findViewById(R.id.new_event_priority_spinner);
         log.setPriority(prioritySpinner.getSelectedItemPosition());
 
-        Spinner taskSpinner=(Spinner)findViewById(R.id.new_event_task_spinner);
+        Spinner taskSpinner = (Spinner) findViewById(R.id.new_event_task_spinner);
         log.setTaskIndex(taskSpinner.getSelectedItemPosition());
 
         log.setCategoryId(categories.get(selectedCategory).getId());
 
         log.setSubcategoryIndex(subcategorySpinner.getSelectedItemPosition());
 
-        EditText description=(EditText)findViewById(R.id.new_event_comment);
+        EditText description = (EditText) findViewById(R.id.new_event_comment);
         log.setDescription(description.getText().toString());
 
-        Intent intent=new Intent(this,StartSessionActivity.class);
-        startActivity(intent);
+        NavUtils.navigateUpFromSameTask(this);
     }
 }

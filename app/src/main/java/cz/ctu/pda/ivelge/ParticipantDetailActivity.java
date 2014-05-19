@@ -129,7 +129,7 @@ public class ParticipantDetailActivity extends ActionBarActivity {
     }
 
     public void startSession(View view) {
-        Intent intent = new Intent(this, StartSessionActivity.class);
+        Intent intent = new Intent(this, SessionActivity.class);
         Bundle b = new Bundle();
         b.putLong("testId", testId);
         b.putLong("sessionId", session.getId());
