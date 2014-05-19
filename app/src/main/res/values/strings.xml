@@ -35,5 +35,20 @@
     <string name="title_activity_start_session">Participant</string>
     <string name="end_session">End Session</string>
     <string name="ip_hint">Enter server IP...</string>
+    <string name="category_label">Category</string>
+    <string name="subcategory_label">Subcategory</string>
+    <string name="comments">Comments...</string>
+    <string name="new_event_discard">Discard</string>
+
+
+
+    <string-array name="priority_array">
+        <item>Priority 1</item>
+        <item>Priority 2</item>
+        <item>Priority 3</item>
+        <item>Priority 4</item>
+        <item>Priority 5</item>
+    </string-array>
+
 
 </resources>

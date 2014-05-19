@@ -26,7 +26,7 @@ public class StartSessionActivity extends ActionBarActivity implements
     private ArrayAdapter<String> spAdapter;
     private String name;
     private Long testId;
-    private int position;
+    private Long sessionId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +38,7 @@ public class StartSessionActivity extends ActionBarActivity implements
         name=b.getString("name");
         this.setTitle(name);
         testId=b.getLong("testId");
-        position=b.getInt("position");
+        sessionId=b.getLong("sessionId");
         Test test=dataSource.getTest(testId);
         Spinner spinner=(Spinner)findViewById(R.id.tasks_spinner);
         spAdapter=new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,test.getTasks());
@@ -108,7 +108,7 @@ public class StartSessionActivity extends ActionBarActivity implements
             Bundle b=new Bundle();
             b.putString("name",name);
             b.putLong("testId",testId);
-            b.putInt("position",position);
+            b.putLong("sessionId",sessionId);
             intent.putExtras(b);
             startActivity(intent);
             return true;

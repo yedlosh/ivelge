@@ -1,4 +1,4 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -6,11 +6,91 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
     tools:context="cz.ctu.pda.ivelge.NewEventActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Spinner
+            android:id="@+id/new_event_priority_spinner"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            >
 
-    <TextView
-        android:text="@string/hello_world"
+            </Spinner>
+        <Spinner
+            android:id="@+id/new_event_task_spinner"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content">
+
+        </Spinner>
+    </LinearLayout>
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/category_label"
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
+        <ImageView
+            android:id="@+id/new_event_add_category_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:src="@drawable/ic_action_new"
+            android:onClick="addCategory"/>
+    </LinearLayout>
+    <Spinner
+        android:id="@+id/new_event_category_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"></Spinner>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/subcategory_label"
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
+        <ImageView
+            android:id="@+id/new_event_add_subcategory_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:src="@drawable/ic_action_new"
+            android:onClick="addSubcategory"/>
+    </LinearLayout>
+    <Spinner
+    android:id="@+id/new_event_subcategory_spinner"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"></Spinner>
+    <EditText
+        android:id="@+id/new_event_comment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/comments"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/new_event_discard_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/new_event_discard"/>
+        <Button
+            android:id="@+id/new_event_save_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:text="@string/save_btn"/>
+        </LinearLayout>
 
-</RelativeLayout>
+
+    </LinearLayout>
