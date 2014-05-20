@@ -19,10 +19,9 @@ public class CommonUttils {
     }
 
     public static List<String> categoryListToString(List<Category> categories) {
-        List<String> stringCat = new ArrayList();
+        List<String> stringCat = new ArrayList<String>();
         for (Category category : categories) {
             stringCat.add(category.getName());
-
         }
         return stringCat;
     }
@@ -30,7 +29,7 @@ public class CommonUttils {
     public static List<String> getAllPriorityInString() {
         List<String> stringCat = new ArrayList();
         for (Integer pr : getAllPriority()) {
-            stringCat.add(pr.toString());
+            stringCat.add("Priority " + pr.toString());
 
         }
         return stringCat;

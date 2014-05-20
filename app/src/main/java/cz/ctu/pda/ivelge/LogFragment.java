@@ -26,9 +26,12 @@ import java.util.Map;
 public class LogFragment extends ListFragment {
     private CategoryDataSource categoryDataSource;
     private LogDataSource logDataSource;
+    private TestDataSource testDataSource;
+    private SessionDataSource sessionDataSource;
     private List<Log> logs;
     private long logId;
     long sessionId;
+    long testId;
 
     public interface Callbacks {
         public double getLatitude();
@@ -46,13 +49,15 @@ public class LogFragment extends ListFragment {
 
         if(getArguments().containsKey("sessionId")) {
             sessionId = getArguments().getLong("sessionId");
+            testId = getArguments().getLong("testId");
         } else if (b != null && b.containsKey("sessionId")){
             sessionId = b.getLong("sessionId");
+            testId = b.getLong("testId");
         }
 
         logDataSource = new LogDataSource(getActivity());
         categoryDataSource = new CategoryDataSource(getActivity());
-
+        testDataSource = new TestDataSource(getActivity());
         logDataSource.open();
 
     }
@@ -61,6 +66,8 @@ public class LogFragment extends ListFragment {
     public void onDestroy() {
         categoryDataSource.close();
         logDataSource.close();
+        testDataSource.close();
+
         super.onDestroy();
     }
 
@@ -106,7 +113,7 @@ public class LogFragment extends ListFragment {
     @Override
     public void onSaveInstanceState(Bundle outState){
         outState.putLong("sessionId",sessionId);
-
+        outState.putLong("testId",testId);
         super.onSaveInstanceState(outState);
     }
 
@@ -114,6 +121,7 @@ public class LogFragment extends ListFragment {
     private List<Map<String, String>> getdata(List<Log> logs) {
 
         categoryDataSource.open();
+        testDataSource.open();
 
         List<Map<String, String>> list = new ArrayList<Map<String, String>>();
         Log log;
@@ -124,8 +132,10 @@ public class LogFragment extends ListFragment {
             SimpleDateFormat dateFormat = new SimpleDateFormat("H:mm");
             map.put("id", Long.toString(log.getId()));
             map.put("timestamp", "Time: " + dateFormat.format(new Date(log.getTimestamp() * 1000)));
-            map.put("priority","Priority " + Integer.toString(log.getPriority()));
-            map.put("task", "Task " + log.getTaskIndex()); //todo
+            map.put("priority", Integer.toString(log.getPriority()));
+            Test test = testDataSource.getTest(testId);
+            String task = test.getTasks().get(log.getTaskIndex());
+            map.put("task",task); //todo
             Category category = categoryDataSource.getCategory(log.getCategoryId());
             map.put("category", category.getName());
             map.put("subcategory1", category.getSubcategory(log.getSubcategoryIndex()));

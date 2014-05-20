@@ -49,7 +49,7 @@ public class DatabaseSQLiteHelper extends SQLiteOpenHelper {
 
 
     private static final String DATABASE_NAME = "ivelge.db";
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
 
     // Table creation sql statements
     private static final String TEST_CREATE = "create table "

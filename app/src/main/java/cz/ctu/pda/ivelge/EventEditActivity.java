@@ -13,32 +13,36 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
 public class EventEditActivity extends ActionBarActivity {
 
     private LogDataSource logDataSource;
-    private SessionDataSource sessiomDataSource;
+    private SessionDataSource sessionDataSource;
     private TestDataSource testDataSource;
     private CategoryDataSource categoryDataSource;
     private long logId;
-
+    private long testId;
+    Test test;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_edit);
 
+        logDataSource = new LogDataSource(this);
+        testDataSource = new TestDataSource(this);
+        categoryDataSource = new CategoryDataSource(this);
+        sessionDataSource = new SessionDataSource(this);
+
         Bundle b = getIntent().getExtras();
         this.logId = b.getLong("logId");
         logDataSource.open();
         categoryDataSource.open();
         testDataSource.open();
-        sessiomDataSource.open();
+        sessionDataSource.open();
 
 
         Log log = logDataSource.getLog(logId);
@@ -49,7 +53,7 @@ public class EventEditActivity extends ActionBarActivity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                Category category=categoryDataSource.getAllCategories().get(position);
+                Category category=test.getCategories().get(position);
                 reloadSubCategory(category);
             }
 
@@ -66,7 +70,7 @@ public class EventEditActivity extends ActionBarActivity {
         logDataSource.close();
         categoryDataSource.close();
         testDataSource.close();
-        sessiomDataSource.close();
+        sessionDataSource.close();
 
         super.onDestroy();
     }
@@ -96,11 +100,14 @@ public class EventEditActivity extends ActionBarActivity {
         Category category = categoryDataSource.getCategory(log.getCategoryId());
         String subCategory = category.getSubcategory(log.getSubcategoryIndex());
 
+        Session session= sessionDataSource.getSession(log.getSessionId());
+        test = testDataSource.getTest(session.getTestId());
+        testId = test.getId();
+
         //Category
         Spinner categorySpinner = (Spinner) findViewById(R.id.edit_Category);
-        List<String> list = CommonUttils.categoryListToString(categoryDataSource.getAllCategories());
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, list);
+        List<String> list = CommonUttils.categoryListToString(test.getCategories());
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, list);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         categorySpinner.setAdapter(dataAdapter);
 
@@ -111,8 +118,7 @@ public class EventEditActivity extends ActionBarActivity {
 
         Spinner subSpinner = (Spinner) findViewById(R.id.edit_SubCategory);
         List<String> subList = category.getSubcategories();
-        ArrayAdapter<String> sDataAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, subList);
+        ArrayAdapter<String> sDataAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, subList);
         sDataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         subSpinner.setAdapter(sDataAdapter);
 
@@ -123,17 +129,13 @@ public class EventEditActivity extends ActionBarActivity {
 
         Spinner prioritySpinner = (Spinner) findViewById(R.id.edit_Priority);
         List<String> priorityList = CommonUttils.getAllPriorityInString();
-        ArrayAdapter<String> prDataAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, priorityList);
+        ArrayAdapter<String> prDataAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, priorityList);
         prDataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         prioritySpinner.setAdapter(prDataAdapter);
 
         prioritySpinner.setSelection(priorityList.indexOf(log.getPriority()));
 
         //Task
-        Session session=sessiomDataSource.getSession(log.getSessionId());
-        Test test=testDataSource.getTest(session.getTestId());
-
         Spinner taskSpinner = (Spinner) findViewById(R.id.edit_Task);
         List<String> taskList = test.getTasks();
         ArrayAdapter<String> tDataAdapter = new ArrayAdapter<String>(this,
@@ -146,9 +148,9 @@ public class EventEditActivity extends ActionBarActivity {
        EditText description=(EditText) findViewById(R.id.edit_Description);
         description.setText(log.getDescription());
 
-        ImageView image = (ImageView) findViewById(R.id.edit_Img);
+/*        ImageView image = (ImageView) findViewById(R.id.edit_Img);
         Bitmap bitmap = BitmapFactory.decodeFile(log.getPhoto().getAbsolutePath());
-        image.setImageBitmap(bitmap);
+        image.setImageBitmap(bitmap);*/
 
     }
 
@@ -166,7 +168,7 @@ public class EventEditActivity extends ActionBarActivity {
 
         Spinner prioritySpinner = (Spinner) findViewById(R.id.edit_Priority);
         Integer prPos=prioritySpinner.getSelectedItemPosition();
-        log.setPriority(prPos+1);
+        log.setPriority(prPos + 1);
 
         Spinner taskSpinner = (Spinner) findViewById(R.id.edit_Task);
         Integer tPos=taskSpinner.getSelectedItemPosition();
@@ -187,6 +189,7 @@ public class EventEditActivity extends ActionBarActivity {
         Log log = logDataSource.getLog(logId);
         Intent intent = new Intent(this, SessionActivity.class);
         intent.putExtra("sessionId", log.getSessionId());
+        intent.putExtra("testId",testId);
         startActivity(intent);
     }
 

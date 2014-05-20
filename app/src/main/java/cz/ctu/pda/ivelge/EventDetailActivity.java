@@ -17,6 +17,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 
 public class EventDetailActivity extends ActionBarActivity {
 
@@ -111,17 +114,18 @@ public class EventDetailActivity extends ActionBarActivity {
         descriptionLabel.setText(log.getDescription());
 
         TextView priorityLabel = (TextView) findViewById(R.id.eventPriority);
-        priorityLabel.setText(log.getPriority());
+        priorityLabel.setText("Priority " + log.getPriority());
 
         TextView taskLabel = (TextView) findViewById(R.id.eventTask);
         taskLabel.setText("Task " + log.getTaskIndex());
 
         TextView timeLabel = (TextView) findViewById(R.id.eventTime);
-        timeLabel.setText(new Long(log.getTimestamp()).toString());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
+        timeLabel.setText(dateFormat.format(new Date(log.getTimestamp() * 1000)));
 
-        ImageView image = (ImageView) findViewById(R.id.eventImage);
+/*        ImageView image = (ImageView) findViewById(R.id.eventImage);
         Bitmap bitmap = BitmapFactory.decodeFile(log.getPhoto().getAbsolutePath());
-        image.setImageBitmap(bitmap);
+        image.setImageBitmap(bitmap);*/
     }
 
     public void sendMessage(View view) {

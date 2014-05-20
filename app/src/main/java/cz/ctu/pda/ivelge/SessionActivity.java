@@ -203,6 +203,7 @@ public class SessionActivity extends Activity implements ActionBar.TabListener {
             if (position == 0) {
                 Bundle arguments = new Bundle();
                 arguments.putLong("sessionId", sessionId);
+                arguments.putLong("testId", testId);
                 if (logFragment == null) {
                     logFragment = new LogFragment();
                 }

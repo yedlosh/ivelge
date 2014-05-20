@@ -1,9 +1,12 @@
 package cz.ctu.pda.ivelge;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class NewEventActivity extends ActionBarActivity implements AdapterView.OnItemSelectedListener {
+public class NewEventActivity extends ActionBarActivity {
     private int selectedTaskIndex = 0;
     private TestDataSource testDataSource;
     private CategoryDataSource categoryDataSource;
@@ -29,6 +32,7 @@ public class NewEventActivity extends ActionBarActivity implements AdapterView.O
     private ArrayAdapter<String> subcategoryAdapter;
     private double latitude;
     private double longitude;
+    Test test;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +49,7 @@ public class NewEventActivity extends ActionBarActivity implements AdapterView.O
 
         testDataSource = new TestDataSource(this);
         testDataSource.open();
-        Test test = testDataSource.getTest(testId);
+        test = testDataSource.getTest(testId);
 
         categoryDataSource = new CategoryDataSource(this);
         categoryDataSource.open();
@@ -69,14 +73,29 @@ public class NewEventActivity extends ActionBarActivity implements AdapterView.O
         Spinner categorySpinner = (Spinner) findViewById(R.id.new_event_category_spinner);
         ArrayAdapter<String> categoryAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categoryList);
         categorySpinner.setAdapter(categoryAdapter);
-        categorySpinner.setOnItemSelectedListener(this);
+        //categorySpinner.setOnItemSelectedListener(this);
 
         subcategorySpinner = (Spinner) findViewById(R.id.new_event_subcategory_spinner);
         subcategoryAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories.get(selectedCategory).getSubcategories());
         subcategorySpinner.setAdapter(subcategoryAdapter);
-        subcategorySpinner.setOnItemSelectedListener(this);
+        //subcategorySpinner.setOnItemSelectedListener(this);
 
 
+        Spinner spinner = (Spinner) findViewById(R.id.new_event_category_spinner);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                selectedCategory = position;
+                Category category=test.getCategories().get(position);
+                reloadSubCategory(category);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+
+        });
     }
 
     @Override
@@ -105,21 +124,6 @@ public class NewEventActivity extends ActionBarActivity implements AdapterView.O
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
-        if (view.getId() == R.id.new_event_category_spinner) {
-            selectedCategory = pos;
-            subcategoryAdapter.clear();
-            subcategoryAdapter.addAll(categories.get(selectedCategory).getSubcategories());
-            subcategorySpinner.setAdapter(subcategoryAdapter);
-        }
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-
-    }
-
     public void discardEvent(View view) {
         Intent intent = new Intent(this, SessionActivity.class);
         Bundle b = new Bundle();
@@ -134,7 +138,7 @@ public class NewEventActivity extends ActionBarActivity implements AdapterView.O
         Log log = new Log(timestamp, sessionId);
 
         Spinner prioritySpinner = (Spinner) findViewById(R.id.new_event_priority_spinner);
-        log.setPriority(prioritySpinner.getSelectedItemPosition());
+        log.setPriority(prioritySpinner.getSelectedItemPosition() + 1);
 
         log.setLatitude(latitude);
         log.setLongitude(longitude);
@@ -161,5 +165,89 @@ public class NewEventActivity extends ActionBarActivity implements AdapterView.O
         b.putLong("sessionId", sessionId);
         intent.putExtras(b);
         NavUtils.navigateUpTo(this,intent);
+    }
+
+    private void reloadCategory(){
+        List<String> categoryList = new ArrayList<String>();
+        for(Category cat : categories){
+            categoryList.add(cat.getName());
+        }
+        Spinner categorySpinner = (Spinner) findViewById(R.id.new_event_category_spinner);
+        ArrayAdapter<String> categoryAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categoryList);
+        categorySpinner.setAdapter(categoryAdapter);
+    }
+
+    private void reloadSubCategory(Category category){
+        Spinner subSpinner = (Spinner) findViewById(R.id.new_event_subcategory_spinner);
+        List<String> subList = category.getSubcategories();
+        ArrayAdapter<String> sDataAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, subList);
+        sDataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        subSpinner.setAdapter(sDataAdapter);
+    }
+
+    public void addCategory(View view){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle("Enter new category");
+
+// Set up the input
+        final EditText input = new EditText(this);
+// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
+
+// Set up the buttons
+        builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String category = input.getText().toString();
+                Category cat = new Category(category);
+                categoryDataSource.commitCategory(cat);
+                test.addCategory(cat);
+                testDataSource.commitTest(test);
+                reloadCategory();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+    }
+
+    public void addSubcategory(View view){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle("Enter new subcategory");
+
+// Set up the input
+        final EditText input = new EditText(this);
+// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
+
+// Set up the buttons
+        builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String subcategory = input.getText().toString();
+                Category cat = categories.get(selectedCategory);
+                cat.addSubcategory(subcategory);
+                categoryDataSource.commitCategory(cat);
+                reloadSubCategory(cat);
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
     }
 }

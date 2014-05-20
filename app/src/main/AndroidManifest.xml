@@ -52,15 +52,14 @@
         <activity
             android:name="cz.ctu.pda.ivelge.ParticipantDetailActivity"
             android:label="@string/title_activity_participant_detail"
-            android:parentActivityName="cz.ctu.pda.ivelge.TestDetail" >
+            android:parentActivityName="cz.ctu.pda.ivelge.TestDetail">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="TestDetail" />
         </activity>
         <activity
             android:name="cz.ctu.pda.ivelge.SessionActivity"
-            android:label="Session"
-            android:parentActivityName="cz.ctu.pda.ivelge.ParticipantDetailActivity">
+            android:label="Session">
         </activity>
         <activity
             android:name="cz.ctu.pda.ivelge.NewTestActivity"

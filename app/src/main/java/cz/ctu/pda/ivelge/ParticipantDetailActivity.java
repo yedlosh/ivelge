@@ -129,6 +129,7 @@ public class ParticipantDetailActivity extends ActionBarActivity {
         b.putLong("sessionId", session.getId());
         b.putString("name", session.getParticipantName());
         b.putLong("endTime", session.getEndTime());
+        b.putLong("testId", testId);
         intent.putExtras(b);
         startActivity(intent);
     }
